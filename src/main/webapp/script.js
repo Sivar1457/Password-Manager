@@ -1,0 +1,3 @@
+let postMethod = function(data) {
+    
+}
