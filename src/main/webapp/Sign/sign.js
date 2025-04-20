@@ -4,7 +4,7 @@ function _(ele) {
 let username = _('username');
 let password = _('password');
 let email = _('email');
-function signIn() {
+async function signIn() { 
     let user = username.value;
     let pass = password.value;
     let mail = email.value;
@@ -15,7 +15,7 @@ function signIn() {
     username.value = '';
     password.value = '';
     email.value = '';
-    fetch('/password/sign',{
+    const responce = await fetch('/password/sign',{
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -26,6 +26,14 @@ function signIn() {
             email: mail,
         })
     })
+    const data = await responce.json();
+    if ( data.value === 'success') {
+        alert('You have been signed in');
+    }
+    else {
+        document.querySelector('.result').innerText = "User is not exist"; ;
+    }
+    console.log(data.value);
 }
 
 _('signin_work').addEventListener('click', function (){

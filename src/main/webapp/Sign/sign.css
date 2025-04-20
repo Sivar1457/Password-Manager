@@ -46,4 +46,10 @@ h2 {
             background-color: #555;
         }
     }
+    .result {
+        margin-top: 20px;
+        font-size: 1.2em;
+        color: #3f3f3f;
+        font-weight: bold;
+    }
 }
