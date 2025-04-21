@@ -1,0 +1,92 @@
+.input-page {
+    padding: 20px;
+    height: 100%;
+    width: 30%;
+    background-color: #ecf0f1;
+    transform: translateX(100%);
+    transition: transform 0.3s ease;
+    position: absolute;
+    top: 0;
+    right:0;
+    z-index: 9;
+    border-left : 1px solid #ccc ;
+
+    h3 {
+        margin-bottom : 20px ;
+    }
+
+    &>.inputs {
+        display: flex;
+        flex-direction: column;
+        & input {
+            width : 80% ;
+            padding: 12px 15px;
+            margin-bottom: 15px;
+            border: none;
+            border-bottom: 1px solid #ccc;
+            background-color: transparent;
+            &:focus {
+                border-color: #007bff;
+                outline: none;
+            }
+        }
+        
+        & > .password-wrapper {
+            width: 80%;
+            position : relative ;
+            & > input {
+                width : 100% ;
+            }
+            & > .toggle-password {
+                position : absolute;
+                right : 40px ;
+                top : 50% ;
+                transform : translateY(-50%) ;
+                cursor : pointer ;
+            }
+            & > .generate-password {
+                position : absolute;
+                right : 10px ;
+                top : 50% ;
+                transform : translateY(-50%) ;
+                cursor : pointer ;
+            }
+        }
+    }
+
+    .input-submit {
+        padding : 10px 20px ;
+        background-color: #70d8f1;
+        color: #2c3e50;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 1rem;
+        transition: background-color 0.3s ease;
+        &:hover {
+            background-color: #4fc5e9;
+        }
+    }
+
+    /* input[type="text"],
+    input[type="password"] {
+        width: 100%;
+        padding: 12px 15px;
+        margin-bottom: 15px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+        font-size: 1rem;
+        transition: border 0.3s ease;
+    }
+
+    input[type="text"]:focus,
+    input[type="password"]:focus {
+        border-color: #007bff;
+        outline: none;
+        background: #fff;
+    } */
+}
+.input-page.show {
+    transform: translateX(0);
+}

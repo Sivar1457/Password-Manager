@@ -1,13 +1,80 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Password Manager</title>
     <link rel="stylesheet" href="main.css">
+    <link rel="stylesheet" href="mainRightStyles.css">
+    <link rel="stylesheet" href="inputPageStyles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined&icon_names=close,edit,history&display=block" rel="stylesheet" />
 </head>
+
 <body>
-    <div class="outer"></div>
+    <div class="outer disp-flex">
+        <div class="left-bar">
+            <div class="all">
+                <h4>All Passwords</h4>
+                <h4>Favorites</h4>
+                <h4>Shared By Me</h4>
+                <h4>Shared With Me</h4>
+                <h4>Trash</h4>
+            </div>
+            <div class="folders">
+                <h3>Folders</h3>
+                <div class="folder-items"></div>
+            </div>
+            <div class="tags">
+                <h3>Tags</h3>
+            </div>
+        </div>
+        <div class="right-bar">
+            <div class="password-page-top">
+                <h3 class="page-name"></h3>
+                <div class="password-options">
+                    <div class="new-pass-btn">New</div>
+                </div>
+            </div>
+            <div class="password-page">
+                <div class="pass">
+                    <h2 class="name">Vault</h2>
+                    <p class="username">Siva</p>
+                </div>
+            </div>
+        </div>
+        <div class="input-page">
+            <h3>New Password</h3>
+            <div class="inputs">
+                <input type="text" class="input-name" placeholder="Enter the name">
+                <input type="text" class="input-username" placeholder="Enter the username">
+                <div class="password-wrapper">
+                    <input type="password" class="input-password" placeholder="Enter the password">
+                    <i class="fa-solid fa-eye toggle-password"></i>
+                    <i class="fas fa-key generate-password"></i>
+                </div>
+                <input type="text" class="input-url" placeholder="Enter the url">
+            </div>
+            <button class="input-submit">Submit</button>
+        </div>
+        <div class="pass-show-up-page">
+            <div class="psp-up">
+                <div class="details">
+                    <h3 class="pass-name"></h3>
+                    <h3 class="pass-date"></h3>
+                </div>
+                <div class="options">
+                    <span class="material-symbols-outlined">edit</span>
+                    <span class="material-symbols-outlined">history</span>
+                    <span class="material-symbols-outlined">close</span>
+                </div>
+            </div>
+            <div class="psp-main"></div>
+        </div>
+    </div>
 </body>
 <script src="main.js"></script>
+<script src="mainRightScript.js"></script>
+<script src="inputPageScript.js"></script>
 </html>
