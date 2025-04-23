@@ -8,8 +8,11 @@
     <link rel="stylesheet" href="main.css">
     <link rel="stylesheet" href="mainRightStyles.css">
     <link rel="stylesheet" href="inputPageStyles.css">
+    <link rel="stylesheet" href="showUpPageStyles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined&icon_names=close,edit,history&display=block" rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined&icon_names=close,edit,history&display=block"
+        rel="stylesheet" />
 </head>
 
 <body>
@@ -38,14 +41,17 @@
                 </div>
             </div>
             <div class="password-page">
-                <div class="pass">
+                <div class="pass" id="pass1">
                     <h2 class="name">Vault</h2>
                     <p class="username">Siva</p>
                 </div>
             </div>
         </div>
         <div class="input-page">
-            <h3>New Password</h3>
+            <div class="ip-top">
+                <h3>New Password</h3>
+                <span class="material-symbols-outlined close-btn">close</span>
+            </div>
             <div class="inputs">
                 <input type="text" class="input-name" placeholder="Enter the name">
                 <input type="text" class="input-username" placeholder="Enter the username">
@@ -61,20 +67,40 @@
         <div class="pass-show-up-page">
             <div class="psp-up">
                 <div class="details">
-                    <h3 class="pass-name"></h3>
-                    <h3 class="pass-date"></h3>
+                    <h3 class="pass-name">Vault</h3>
+                    <h4 class="pass-date">April 21,2025</h4>
                 </div>
                 <div class="options">
                     <span class="material-symbols-outlined">edit</span>
                     <span class="material-symbols-outlined">history</span>
-                    <span class="material-symbols-outlined">close</span>
+                    <span class="material-symbols-outlined close-btn">close</span>
                 </div>
             </div>
-            <div class="psp-main"></div>
+            <div class="psp-main">
+                <div class="username">
+                    <div class="label">User Name</div>
+                    <div class="value">Siva</div>
+                </div>
+                <div class="password">
+                    <div class="label">Password</div>
+                    <div class="value">**************</div>
+                </div>
+                <div class="url">
+                    <div class="label">URL</div>
+                    <div class="value">https://vault.zoho.com/</div>
+                </div>
+                <div class="description">
+                    <div class="label">Description</div>
+                    <div class="value">This is a test description for the password manager application. It is used to
+                        test the functionality of the application.</div>
+                </div>
+            </div>
         </div>
     </div>
 </body>
 <script src="main.js"></script>
 <script src="mainRightScript.js"></script>
 <script src="inputPageScript.js"></script>
+<script src="showUpPageScript.js"></script>
+
 </html>
