@@ -41,10 +41,6 @@
                 </div>
             </div>
             <div class="password-page">
-                <div class="pass" id="pass1">
-                    <h2 class="name">Vault</h2>
-                    <p class="username">Siva</p>
-                </div>
             </div>
         </div>
         <div class="input-page">

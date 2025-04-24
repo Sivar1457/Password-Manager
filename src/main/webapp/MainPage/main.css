@@ -36,13 +36,17 @@ body {
     h4 {
         color: #7e8081;
         font-weight: 100;
+        transition : 0.3s ease;
     }
     h4:hover {
         background-color: #34495e;
         color : #cad2d4;
     }
     .all > * {
-        padding : 12px 12px 12px 12px;
+        padding : 12px 12px 12px 24px;
+    }
+    .folders , .tags {
+        margin-left : 12px ;
     }
 }
 
