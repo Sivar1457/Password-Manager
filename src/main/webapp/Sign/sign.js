@@ -4,31 +4,22 @@ function _(ele) {
 let username = _('username');
 let password = _('password');
 let email = _('email');
-async function signIn() { 
-    let user = username.value;
-    let pass = password.value;
-    let mail = email.value;
-    if (user === '' || pass === '' || mail === '') {
-        alert('Please fill in all fields');
-        return;
-    }
-    username.value = '';
-    password.value = '';
-    email.value = '';
-    const responce = await fetch('/password/sign',{
+async function signIn() {
+    const responce = await fetch('/password/signIn',{
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-            username: user,
-            password: pass,
-            email: mail,
+            user_name: username.value,
+            master_pass: password.value,
+            email: email.value
         })
     })
     const data = await responce.json();
-    if ( data.value === 'success') {
-        alert('You have been signed in');
+    if ( data.result === 'success') {
+        window.location.href = '/password/MainPage/main.jsp';
+        
     }
     else {
         document.querySelector('.result').innerText = "User is not exist"; ;
@@ -36,6 +27,58 @@ async function signIn() {
     console.log(data.value);
 }
 
-_('signin_work').addEventListener('click', function (){
-    signIn();
+async function signUp() {
+    const responce = await fetch('/password/signUp',{
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            user_name: username.value,
+            master_pass: password.value,
+            email: email.value
+        })
+    })
+    const data = await responce.json();
+    if ( data.result === 'success') {
+        alert('You have been signed up');
+    }
+    else {
+        document.querySelector('.result').innerText = "User is already exist"; ;
+    }
+    console.log(data.value);
+}
+
+document.querySelector('.page-changer').addEventListener('click' , function() {
+    let pageChanger = document.querySelector('.page-changer');
+    if (pageChanger.id == '1') {
+        pageChanger.id = '2';
+        pageChanger.innerText = 'Already have an account? Sign in';
+        document.getElementById('confirm_password').classList.remove('hide');
+        _('work').innerText = 'Sign up';
+    }
+    else {
+        pageChanger.id = '1';
+        pageChanger.innerText = 'Don\'t have an account? Sign up';
+        document.getElementById('confirm_password').classList.add('hide');
+        _('work').innerText = 'Sign in';
+    }
+
+})
+
+_('work').addEventListener('click', function (){
+    let pageChanger = document.querySelector('.page-changer');
+    if (username.value === '' || password.value === '' || email.value === '') {
+        alert('Please fill in all fields');
+        return;
+    }
+    if (pageChanger.id == '1') {
+        signIn();
+    }
+    else {
+        signUp();
+    }
+    username.value = '';
+    password.value = '';
+    email.value = '';
 } )

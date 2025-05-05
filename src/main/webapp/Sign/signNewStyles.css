@@ -33,6 +33,14 @@ h2 {
                 border-color: #3f3f3f;
                 outline: none;
             }
+            transition: all 0.3s ease;
+        }
+        #confirm_password.hide {
+            opacity : 0;
+            width: 0;
+            padding: 0;
+            margin: 0;
+            border: 0;
         }
     }
 
@@ -56,8 +64,11 @@ h2 {
     .page-changer {
         cursor : pointer ;
         color: #555;
-        border: 1px solid #ccc;
         width: fit-content;
-        margin: 5px auto;
+        margin: 10px auto;
+        &:hover {
+            color: #3f3f3f;
+            text-decoration: underline;
+        }
     }
 }

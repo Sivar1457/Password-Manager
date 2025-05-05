@@ -29,7 +29,11 @@
       <groupId>org.json</groupId>
       <artifactId>json</artifactId>
       <version>20231013</version>
-    </dependency>
+    </dependency><dependency>
+    <groupId>org.jetbrains.pty4j</groupId>
+    <artifactId>pty4j</artifactId>
+    <version>0.13.4</version>
+  </dependency>
   </dependencies>
   <build>
     <finalName>TestServlet2</finalName>
