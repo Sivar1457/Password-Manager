@@ -11,6 +11,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.sql.Connection;
@@ -33,6 +34,12 @@ public class SignIn extends HttpServlet {
         }
         boolean cond = checkWithUserData(requestData);
         JSONObject result = new JSONObject();
+        if ( cond ) {
+            String userName = (new JSONObject(requestData)).getString("user_name") ;
+            HttpSession session = req.getSession(false);
+            session.setAttribute("user_name",userName);
+            result.put("user_name",userName);
+        }
         result.put("result",(cond)?"success":"failure");
         output.write(result.toString().getBytes());
     }

@@ -48,7 +48,6 @@ public class SymmetricConvertor {
             BufferedReader br = new BufferedReader(new InputStreamReader(process.getInputStream()));
             String line;
             while ( (line = br.readLine()) != null ) {
-                System.out.println(line);
                 if ( line.contains("incorrect passphrase") ) return false ;
             }
             return true;

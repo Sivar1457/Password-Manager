@@ -26,3 +26,34 @@ $("left-bar").addEventListener("click", function (e) {
         selectionLeftBar(element);
     }
 })
+
+let profileSetUp = async function () {
+    let response = await fetch('/password/signCheck', {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+    let data = await response.json();
+    console.log(data)
+    if (data.result === 'failure') {
+        window.location.href = '/password/Sign/sign.jsp';
+    }
+    $('profile .profile-name').innerText = data.user_name;
+}
+
+let logOut = async function () {
+    await fetch('/password/signOut', {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+    setTimeout(() => {
+        window.location.href = '/password/Sign/sign.jsp';
+    }, 1000);
+}
+
+$('left-bar-bottom .logout').addEventListener('click', logOut );
+
+profileSetUp();

@@ -17,9 +17,9 @@ async function signIn() {
         })
     })
     const data = await responce.json();
+    console.log(data);
     if ( data.result === 'success') {
         window.location.href = '/password/MainPage/main.jsp';
-        
     }
     else {
         document.querySelector('.result').innerText = "User is not exist"; ;

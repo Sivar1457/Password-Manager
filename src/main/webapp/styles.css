@@ -1,0 +1,16 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+body {
+    height : 100vh;
+    width : 100vw;
+    overflow: hidden;
+    background-color: black;
+    color: rgb(253, 92, 92);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: Arial, sans-serif;
+}

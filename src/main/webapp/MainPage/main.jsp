@@ -11,26 +11,39 @@
     <link rel="stylesheet" href="showUpPageStyles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link
-        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined&icon_names=close,edit,history&display=block"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined&icon_names=close,edit,history,logout&display=block"
         rel="stylesheet" />
 </head>
 
 <body>
     <div class="outer disp-flex">
         <div class="left-bar">
-            <div class="all">
-                <h4>All Passwords</h4>
-                <h4>Favorites</h4>
-                <h4>Shared By Me</h4>
-                <h4>Shared With Me</h4>
-                <h4>Trash</h4>
+            <div class="left-bar-top">
+                <div class="all">
+                    <h4>All Passwords</h4>
+                    <h4>Favorites</h4>
+                    <h4>Shared By Me</h4>
+                    <h4>Shared With Me</h4>
+                    <h4>Trash</h4>
+                </div>
+                <div class="folders">
+                    <h3>Folders</h3>
+                    <div class="folder-items"></div>
+                </div>
+                <div class="tags">
+                    <h3>Tags</h3>
+                </div>
             </div>
-            <div class="folders">
-                <h3>Folders</h3>
-                <div class="folder-items"></div>
-            </div>
-            <div class="tags">
-                <h3>Tags</h3>
+            <div class="left-bar-bottom">
+                <div class="profile">
+                        <img src="images/BL_Icon_Shoei_Baro.webp"
+                            alt="Profile Image" class="profile-image">
+                        <h2 class="profile-name">Sivar</h2>
+                </div>
+                <div class="logout">
+                    <span class="material-symbols-outlined">logout</span>
+                    <h4>Logout</h4>
+                </div>
             </div>
         </div>
         <div class="right-bar">
