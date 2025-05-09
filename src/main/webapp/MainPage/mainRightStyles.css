@@ -45,6 +45,9 @@
         color: #2c3e50;
         cursor: pointer;
         transition : background-color 0.3s ease;
+        & > *.hide {
+            display: none;
+        }
         &:hover {
             background-color: #2c3e50;
             color : #ecf0f1;

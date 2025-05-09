@@ -19,19 +19,67 @@ let passwordSetter = function (password) {
     div.appendChild(h2);
     div.appendChild(p);
     passPage.appendChild(div);
-    div.addEventListener('click', function () {
+    // div.addEventListener('click', function () {
+    //     if (!passUpPage.classList.contains('show')) {
+    //         passUpPage.querySelector('.pass-name').innerText = password.name;
+    //         passUpPage.querySelector('.pass-date').innerText = password.date;
+    //         passUpPage.querySelector('.username .value').innerText = password.userName;
+    //         passUpPage.querySelector('.password .value').innerText = password.password;
+    //         passUpPage.querySelector('.url .value').innerText = password.url;
+    //         passUpPage.querySelector('.description .value').innerText = password.description;
+    //         if (!passUpPage.classList.contains('show') && !inputPage.classList.contains('show')) {
+    //             passUpPage.classList.add('show');
+    //         }
+    //     }
+    // })
+}
+
+document.querySelectorAll('.pass').forEach((pass)=>{
+    pass.addEventListener('click', function () {
         if (!passUpPage.classList.contains('show')) {
-            passUpPage.querySelector('.pass-name').innerText = password.name;
-            passUpPage.querySelector('.pass-date').innerText = password.date;
-            passUpPage.querySelector('.username .value').innerText = password.userName;
-            passUpPage.querySelector('.password .value').innerText = password.password;
-            passUpPage.querySelector('.url .value').innerText = password.url;
-            passUpPage.querySelector('.description .value').innerText = password.description;
+            passUpPage.querySelector('.pass-name').innerText = pass.querySelector('.name').innerText;
+            passUpPage.querySelector('.pass-date').innerText = pass.querySelector('.date-time').innerText;
+            passUpPage.querySelector('.username .value').innerText = pass.querySelector('.username').innerText;
+            passUpPage.querySelector('.password .value').innerText = "********";
+            passUpPage.querySelector('.url .value').innerText = pass.querySelector('.web-url').innerText;
+            passUpPage.querySelector('.description .value').innerText = pass.querySelector('.description').innerText;
+            passUpPage.querySelector('.pass-date').innerText = pass.querySelector('.date-time').innerText ;
+            passUpPage.querySelector('.psp-pass-id').innerText = pass.querySelector('.pass-id').innerText;
             if (!passUpPage.classList.contains('show') && !inputPage.classList.contains('show')) {
                 passUpPage.classList.add('show');
             }
         }
     })
+})
+
+document.querySelector('.psp-main .show-up-toggle').addEventListener('click',function(){
+    document.querySelector('.psp-master-pass').classList.remove('hide');
+})
+
+let masterPassGetFunc = async function(){
+    let responce = await fetch('/password/passGetter', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            pass_id : document.querySelector('.psp-pass-id').innerText,
+            master_pass : document.querySelector('.psp-master-pass').querySelector('input').value
+        })
+    })
+    let data = await responce.json();
+    console.log(data);
+    if ( data.result == 'success' ) {
+        document.querySelector('.psp-master-pass').querySelector('input').value = '';
+        passUpPage.querySelector('.password .value').innerText = data.pass;
+        passUpPage.querySelector('.psp-master-pass').classList.add('hide');
+    }
+    else {
+        document.querySelector('.psp-master-pass').querySelector('input').value = '';
+        alert('Wrong Master Password');
+    } 
 }
 
-setUp();
+document.querySelector('.master-pass-submit').addEventListener('click', masterPassGetFunc )
+
+// setUp();

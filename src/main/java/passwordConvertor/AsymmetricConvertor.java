@@ -27,8 +27,8 @@ public class AsymmetricConvertor {
     }
 
     public String decryption(String encryptedPass , String privateKey) {
-        String command = "" ;
-        ProcessBuilder pb = new ProcessBuilder(command);
+        String command = String.format("echo \"%s\" | age -d -i <(echo \"%s\")",encryptedPass,privateKey);
+        ProcessBuilder pb = new ProcessBuilder("bash","-c",command);
         try {
             Process process = pb.start();
             BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
@@ -44,10 +44,6 @@ public class AsymmetricConvertor {
             e.printStackTrace();
         }
         return "";
-    }
-
-    public static void main(String[] args) {
-
     }
 
 }

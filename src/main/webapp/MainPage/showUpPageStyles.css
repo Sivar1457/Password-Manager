@@ -41,9 +41,17 @@
         display: flex;
         flex-direction: column;
         gap: 10px;
+        .psp-pass-id {
+            display: none;
+        }
         & > * {
             display: flex;
             gap : 20px ;
+            .show-up-toggle {
+                cursor: pointer;
+                font-size: 24px;
+                margin : auto ;
+            }
             & > .label {
                 width : 30% ;
                 color: #2c3e50;
@@ -53,6 +61,46 @@
                 width : 70% ;
                 color: #34495e;
                 text-align : left ;
+            }
+        }
+    }
+    & > .psp-master-pass {
+        width: 80%;
+        margin: auto;
+        display: flex;
+        justify-content: space-between;
+        transition: all 0.3s ease;
+        &.hide {
+            opacity : 0;
+            width: 0;
+            height : 0 ;
+            padding: 0;
+            margin: 0;
+            border: 0;
+        }
+        & > input {
+            width : 70% ;
+            padding: 12px 15px;
+            margin-bottom: 15px;
+            border: none;
+            border-bottom: 1px solid #ccc;
+            background-color: transparent;
+            &:focus {
+                border-color: #007bff;
+                outline: none;
+            }
+        }
+        & > button {
+            padding : 5px 10px ;
+            background-color: #70d8f1;
+            color: #2c3e50;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background-color 0.3s ease;
+            &:hover {
+                background-color: #4fc5e9;
             }
         }
     }

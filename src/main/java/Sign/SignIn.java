@@ -32,28 +32,42 @@ public class SignIn extends HttpServlet {
         while ( (inputLen = input.readLine(bytesArray , 0 , bytesArray.length)) != -1 ) {
             requestData = new String(bytesArray,0,inputLen, StandardCharsets.UTF_8);
         }
-        boolean cond = checkWithUserData(requestData);
+        int user_id = checkWithUserData(requestData);
         JSONObject result = new JSONObject();
-        if ( cond ) {
-            String userName = (new JSONObject(requestData)).getString("user_name") ;
+        if ( user_id != -1 ) {
+            String query = "select user_name from \"user\" where \"user_id\" = ? ;" ;
+            Connection conn = PostgresConnection.getConnection();
+            String userName = null ;
+            try {
+                PreparedStatement preparedStatement = conn.prepareStatement(query);
+                preparedStatement.setInt(1,user_id);
+                ResultSet data = preparedStatement.executeQuery();
+                if (data.next() ) {
+                    userName = data.getString("user_name");
+                }
+            }
+            catch (Exception e) {
+                e.printStackTrace();
+            }
             HttpSession session = req.getSession(false);
             session.setAttribute("user_name",userName);
             result.put("user_name",userName);
         }
-        result.put("result",(cond)?"success":"failure");
+        result.put("result",(user_id != -1)?"success":"failure");
         output.write(result.toString().getBytes());
     }
 
-    public boolean checkWithUserData(String data){
+    public int checkWithUserData(String data){
         JSONObject jsonData = new JSONObject(data);
-        String query = "select * from \"user\" where \"user_name\" = ? and \"email\" = ?";
+        String type = jsonData.getString("type");
+        String query = String.format("select * from \"user\" where %s = ? ",type);
         Connection conn = PostgresConnection.getConnection();
         try {
             PreparedStatement preparedStatement = conn.prepareStatement(query);
-            preparedStatement.setString(1, jsonData.getString("user_name"));
-            preparedStatement.setString(2, jsonData.getString("email"));
+            preparedStatement.setString(1, jsonData.getString(type));
             ResultSet dataResult = preparedStatement.executeQuery();
             if (dataResult.next()) {
+                int user_id = dataResult.getInt("user_id");
                 int key_id = dataResult.getInt("key_id");
                 query = "select private_key from \"key\" where key_id = ? " ;
                 preparedStatement = conn.prepareStatement(query);
@@ -62,8 +76,8 @@ public class SignIn extends HttpServlet {
                 if ( dataResult.next() ) {
                     String private_key = dataResult.getString(1);
                     SymmetricConvertor symmetricConvertor = new SymmetricConvertor();
-                    if (symmetricConvertor.decrption(private_key, jsonData.getString("master_pass")) ){
-                        return true;
+                    if (symmetricConvertor.decryption(private_key, jsonData.getString("master_pass")) ){
+                        return user_id;
                     }
                 }
             }
@@ -79,6 +93,6 @@ public class SignIn extends HttpServlet {
                 e.printStackTrace();
             }
         }
-        return false ;
+        return -1 ;
     }
 }

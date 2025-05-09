@@ -1,3 +1,4 @@
+<%@ page import="db.PostgresConnection,java.sql.*"%>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -54,6 +55,41 @@
                 </div>
             </div>
             <div class="password-page">
+                <%
+                    Connection conn = PostgresConnection.getConnection();
+                    try {
+                        String query = "select p.* from \"password_container\" p \n" +
+                            "join \"user\" u on u.user_name = ?\n" +
+                            "where p.owner_id = u.user_id;" ;
+                        PreparedStatement preparedStatement = conn.prepareStatement(query);
+                        preparedStatement.setString(1,(String)session.getAttribute("user_name"));
+                        ResultSet data = preparedStatement.executeQuery();
+                        while (data.next()) {
+                            %>
+                                <div class="pass">
+                                    <h2 class="name"><%=data.getString("web_name")%></h2>
+                                    <p class="username"><%=data.getString("name")%></p>
+                                    <p class="web-url hide"><%=data.getString("web_url")%></p>
+                                    <p class="description hide"><%=data.getString("description")%></p>
+                                    <p class="date-time hide"><%=(data.getString("dt_stamp") != null) ? data.getString("dt_stamp") : "No date available"%></p>
+                                    <p class="pass-id hide"><%=data.getInt("pass_id")%></p>
+                                </div>
+                            <%
+                        }
+                    }
+                    catch(Exception e) {
+                        e.printStackTrace();
+                    }
+                    finally {
+                        try {
+                            if (conn != null) {
+                                conn.close();
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                %>
             </div>
         </div>
         <div class="input-page">
@@ -93,6 +129,7 @@
                 <div class="password">
                     <div class="label">Password</div>
                     <div class="value">**************</div>
+                    <i class="fa-solid fa-eye show-up-toggle"></i>
                 </div>
                 <div class="url">
                     <div class="label">URL</div>
@@ -103,6 +140,11 @@
                     <div class="value">This is a test description for the password manager application. It is used to
                         test the functionality of the application.</div>
                 </div>
+                <div class="psp-pass-id"></div>
+            </div>
+            <div class="psp-master-pass hide">
+                <input type="text" class="master-pass" placeholder="Enter the master password">
+                <button class="master-pass-submit">Submit</button>
             </div>
         </div>
     </div>

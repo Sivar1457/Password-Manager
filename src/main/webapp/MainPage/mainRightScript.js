@@ -32,4 +32,5 @@ rightBar.querySelector('.new-pass-btn').addEventListener('click', function () {
 
 passUpPage.querySelector('.close-btn').addEventListener('click', function () {
     passUpPage.classList.remove('show');
+    document.querySelector('.psp-master-pass').classList.add('hide');
 })

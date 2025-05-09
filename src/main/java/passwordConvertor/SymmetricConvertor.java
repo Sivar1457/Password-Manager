@@ -36,7 +36,7 @@ public class SymmetricConvertor {
         return "";
     }
 
-    public boolean decrption(String pass , String passphrase) {
+    public boolean decryption(String pass , String passphrase) {
         String command = String.format("expect -c '                                    spawn sh -c \"echo \\\"%s\\\" | age -d\"\n" +
                 "expect \"Enter passphrase\"\n" +
                 "send \"%s\\r\"\n" +
@@ -58,6 +58,32 @@ public class SymmetricConvertor {
         return false;
     }
 
+    public String decryptValue(String pass , String passphrase) {
+        String command = String.format("expect -c 'spawn sh -c \"echo \\\"%s\\\" | age -d\"\n" +
+                "expect \"Enter passphrase\"\n" +
+                "send \"%s\\r\"\n" +
+                "expect eof\n" +
+                "'",pass,passphrase) ;
+        ProcessBuilder pb = new ProcessBuilder("bash","-c",command);
+        try {
+            Process process = pb.start();
+            BufferedReader br = new BufferedReader(new InputStreamReader(process.getInputStream()));
+            String line;
+            StringBuilder sb = new StringBuilder();
+            boolean cond = false ;
+            while ( (line = br.readLine()) != null ) {
+                if ( line.contains("incorrect passphrase") ) return "incorrect" ;
+                if ( cond ) sb.append(line);
+                if ( line.trim().endsWith(":") ) cond = true ;
+            }
+            return sb.toString().trim();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            e.printStackTrace();
+        }
+        return "null";
+    }
+
     public static void main(String[] args) {
         SymmetricConvertor convertor = new SymmetricConvertor();
         String[] arr = new String[2];
@@ -65,7 +91,8 @@ public class SymmetricConvertor {
         arr[0] = "Hello" ;
         arr[0] = convertor.encrption(arr[0],"siva");
         System.out.println(arr[0]);
-        System.out.println(convertor.decrption(arr[0],"siva"));
+        System.out.println(convertor.decryption(arr[0],"siva"));
+        System.out.println(convertor.decryptValue(arr[0],"siva"));
     }
 
 }
