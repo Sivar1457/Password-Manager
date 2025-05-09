@@ -37,7 +37,7 @@ let profileSetUp = async function () {
     let data = await response.json();
     console.log(data)
     if (data.result === 'failure') {
-        window.location.href = '/password/Sign/sign.jsp';
+        window.location.href = '/password/';
     }
     $('profile .profile-name').innerText = data.user_name;
 }
@@ -50,7 +50,7 @@ let logOut = async function () {
         }
     })
     setTimeout(() => {
-        window.location.href = '/password/Sign/sign.jsp';
+        window.location.href = '/password/';
     }, 1000);
 }
 

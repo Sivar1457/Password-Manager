@@ -92,9 +92,10 @@ async function signUp() {
     confirmPassword.value = '';
     email.value = '';
     console.log(data.value);
+    pageChangerFunc();
 }
 
-document.querySelector('.page-changer').addEventListener('click', function () {
+let pageChangerFunc = function () {
     let pageChanger = document.querySelector('.page-changer');
     let confirmPassword = document.getElementById('confirm_password');
     let userName = document.getElementById('username');
@@ -127,23 +128,11 @@ document.querySelector('.page-changer').addEventListener('click', function () {
         _('work').innerText = 'Sign in';
     }
 
-})
+}
+document.querySelector('.page-changer').addEventListener('click',pageChangerFunc)
 
 _('work').addEventListener('click', function () {
     let pageChanger = document.querySelector('.page-changer');
-    // if (username.value === '' || password.value === '' || email.value === '') {
-    //     alert('Please fill in all fields');
-    //     return;
-    // }
-    // if (pageChanger.id == '1') {
-    //     signIn();
-    // }
-    // else {
-    //     signUp();
-    // }
-    // username.value = '';
-    // password.value = '';
-    // email.value = '';
     if (pageChanger.id == '1') {
         signIn();
     }
@@ -151,3 +140,18 @@ _('work').addEventListener('click', function () {
         signUp();
     }
 })
+
+let checkOut = async function() {
+    const response = await fetch('/password/signCheck',{
+        method:'GET',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    });
+    const data = await response.json();
+    console.log(data);
+    if (data.result === 'success') {
+        window.location.href = '/password/MainPage/main.jsp';
+    }
+}
+checkOut();
