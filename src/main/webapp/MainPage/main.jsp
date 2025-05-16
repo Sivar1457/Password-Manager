@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="showUpPageStyles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link
-        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined&icon_names=close,edit,history,logout&display=block"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined&icon_names=close,edit,history,logout,share&display=block"
         rel="stylesheet" />
 </head>
 
@@ -66,7 +66,7 @@
                         ResultSet data = preparedStatement.executeQuery();
                         while (data.next()) {
                             %>
-                                <div class="pass">
+                                <div class="pass" id="pass-<%= data.getInt("pass_id") %>">
                                     <h2 class="name"><%=data.getString("web_name")%></h2>
                                     <p class="username"><%=data.getString("name")%></p>
                                     <p class="web-url hide"><%=data.getString("web_url")%></p>
@@ -116,8 +116,9 @@
                     <h4 class="pass-date">April 21,2025</h4>
                 </div>
                 <div class="options">
-                    <span class="material-symbols-outlined">edit</span>
-                    <span class="material-symbols-outlined">history</span>
+                    <span class="material-symbols-outlined share-btn">share</span>
+                    <span class="material-symbols-outlined edit-btn">edit</span>
+                    <span class="material-symbols-outlined history-btn">history</span>
                     <span class="material-symbols-outlined close-btn">close</span>
                 </div>
             </div>
@@ -142,9 +143,147 @@
                 </div>
                 <div class="psp-pass-id"></div>
             </div>
+            <div class="psp-history hide">
+                <div class="ph-top">
+                    <h3>History</h3>
+                    <i class="fa-solid fa-close"></i>
+                </div>
+                <div class="ph-bottom">
+                    <div class="ph-pass-history">
+                        <div class="ph-heading">
+                            <h4>Password</h4>
+                            <h4>Modified Time</h4>
+                        </div>
+                        <div class="ph-values">
+                            <div class="ph-value">
+                                <div class="ph-left">
+                                    <i class="fa-solid fa-copy"></i>
+                                    <div class="ph-pass-box">
+                                        <p class="ph-pass">********</p>
+                                        <i class="fa-solid fa-eye"></i>
+                                    </div>
+                                </div>
+                                <div class="ph-right">
+                                    <p class="ph-modify-date">
+                                        May 21,2025, 10:30 AM
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ph-username-history">
+                        <div class="ph-heading">
+                            <h4>User Name</h4>
+                            <h4>Modified Time</h4>
+                        </div>
+                        <div class="ph-values">
+                            <div class="ph-value">
+                                <div class="ph-left">
+                                    <i class="fa-solid fa-copy"></i>
+                                    <p class="ph-username">Siva</p>
+                                </div>
+                                <div class="ph-right">
+                                    <p class="ph-modify-date">
+                                        May 21,2025, 10:30 AM
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ph-no-history show">
+                        <h4>No history available</h4>
+                    </div>
+                </div>
+            </div>
             <div class="psp-master-pass hide">
                 <input type="text" class="master-pass" placeholder="Enter the master password">
                 <button class="master-pass-submit">Submit</button>
+            </div>
+            <div class="psp-share">
+                <div class="psp-share-top">
+                    <h3>Share Password</h3>
+                    <i class="fa-solid fa-close"></i>
+                </div>
+                <div class="psp-share-bottom">
+                    <div class="psp-share-user-outline">
+                        <div class="psp-share-user-title">
+                            <h4>User Name</h4>
+                            <span class="psp-share-mandatory">~</span>
+                        </div>
+                        <div class="psp-share-user-list">
+                            <div class="psp-share-user">
+                                <p class="psp-share-user-name">Sivar</p>
+                                <button class="psp-share-user-btn">Share</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="pass-edit-page">
+            <div class="pep-top">
+                <h3>Edit Password</h3>
+                <i class="fa-solid fa-close pep-close-btn"></i>
+            </div>
+            <div class="pep-middle">
+                <div class="pep-name">
+                    <div class="pep-left">
+                        <div class="pep-label">
+                            <h4>Name</h4>
+                            <span class="pep-mandatory">*</span>
+                        </div>
+                    </div>
+                    <div class="pep-right">
+                        <input type="text" class="pep-input-name">
+                    </div>
+                </div>
+                <div class="pep-user-name">
+                    <div class="pep-left">
+                        <div class="pep-label">
+                            <h4>User Name</h4>
+                            <span class="pep-mandatory">*</span>
+                        </div>
+                    </div>
+                    <div class="pep-right">
+                        <input type="text" class="pep-input-user-name">
+                    </div>
+                </div>
+                <div class="pep-password">
+                    <div class="pep-left">
+                        <div class="pep-label">
+                            <h4>Password</h4>
+                            <span class="pep-mandatory">*</span>
+                        </div>
+                    </div>
+                    <div class="pep-right">
+                        <input type="password" class="pep-input-password">
+                        <i class="fa-solid fa-eye toggle-password"></i>
+                    </div>
+                </div>
+                <div class="pep-url">
+                    <div class="pep-left">
+                        <div class="pep-label">
+                            <h4>URL</h4>
+                        </div>
+                    </div>
+                    <div class="pep-right">
+                        <input type="text" class="pep-input-url">
+                    </div>
+                </div>
+                <div class="pep-description">
+                    <div class="pep-left">
+                        <div class="pep-label">
+                            <h4>Description</h4>
+                        </div>
+                    </div>
+                    <div class="pep-right">
+                        <input type="text" class="pep-input-description">
+                    </div>
+                </div>
+            </div>
+            <div class="pep-bottom">
+                <button class="pep-update-btn">Update</button>
+                <button class="pep-cancel-btn">Cancel</button>
             </div>
         </div>
     </div>

@@ -1,6 +1,6 @@
 .pass-show-up-page {
-    height : 100% ;
-    width : 40% ;
+    height: 100%;
+    width: 25%;
     background-color: #f0f0f0;
     padding: 20px;
     border-radius: 5px;
@@ -9,89 +9,237 @@
     transition: transform 0.3s ease;
     position: absolute;
     top: 0;
-    right:0;
+    right: 0;
     z-index: 9;
-    & > .psp-up {
-        display : flex ;
-        justify-content: space-between ;
+
+    &>.psp-up {
+        display: flex;
+        justify-content: space-between;
         align-items: center;
-        padding : 10px 0 10px 0 ;
+        padding: 10px 0 10px 0;
         border-bottom: 1px solid #ccc;
-        & > .details {
-            display : flex ;
-            flex-direction : column ;
-            gap : 5px ;
+
+        &>.details {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
         }
-        & > .options {
-            display : flex ;
-            gap : 5px ;
-            & > * {
-                padding : 5px ;
+
+        &>.options {
+            display: flex;
+            gap: 5px;
+
+            &>* {
+                padding: 5px;
                 font-size: 24px;
-                margin : auto ;
+                margin: auto;
                 cursor: pointer;
+
                 &:hover {
                     color: #007bff;
                 }
             }
         }
     }
-    & > .psp-main {
+
+    &>.psp-main {
         padding: 20px;
         display: flex;
         flex-direction: column;
         gap: 10px;
+
         .psp-pass-id {
             display: none;
         }
-        & > * {
+
+        &>* {
             display: flex;
-            gap : 20px ;
+            gap: 20px;
+
             .show-up-toggle {
                 cursor: pointer;
                 font-size: 24px;
-                margin : auto ;
+                margin: auto;
             }
-            & > .label {
-                width : 30% ;
+
+            .show-up-toggle.on {
+                color: #007bff;
+            }
+
+            &>.label {
+                width: 30%;
                 color: #2c3e50;
-                text-align : right ;
+                text-align: right;
             }
-            & > .value {
-                width : 70% ;
+
+            &>.value {
+                width: 70%;
                 color: #34495e;
-                text-align : left ;
+                text-align: left;
             }
         }
     }
-    & > .psp-master-pass {
+
+    &>.psp-history {
+        width: 90%;
+        background-color: #34495e;
+        color: #ecf0f1;
+        position: absolute;
+        top: 110px;
+        right: 20px;
+        z-index: 29;
+        transition: all 0.3s ease;
+
+        &.hide {
+            opacity: 0;
+            width: 0;
+            height: 0;
+            padding: 0;
+            margin: 0;
+            border: 0;
+        }
+
+        .ph-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px;
+            border-bottom: 1px solid #ccc;
+
+            &>i {
+                cursor: pointer;
+                font-size: 24px;
+
+                &:hover {
+                    color: #007bff;
+                }
+            }
+        }
+
+        .ph-bottom {
+            padding: 10px;
+
+            &>div {
+                opacity: 0;
+                width: 0;
+                height: 0;
+                padding: 0;
+                margin: 0;
+                border: 0;
+            }
+
+            &>div.show {
+                opacity: 1;
+                width: 100%;
+                height: auto;
+                padding: 10px;
+                margin: 0;
+                border: 1px solid #ccc;
+                background-color: #ecf0f1;
+                color: #2c3e50;
+            }
+
+            .ph-heading {
+                display: flex;
+                background-color: #f0f0f0;
+                color: black;
+                border-top: 1px solid #ccc;
+                border-bottom: 1px solid #ccc;
+
+                &>* {
+                    width: 50%;
+                    padding: 10px;
+                    text-align: center;
+                    font-weight: bold;
+                }
+            }
+
+            .ph-values {
+                &>.ph-value {
+                    display: flex;
+                    background-color: white;
+                    color: black;
+
+                    &>* {
+                        width: 50%;
+                        padding: 10px;
+                        text-align: center;
+                        color: #2c3e50;
+                    }
+
+                    &>.ph-left {
+                        display: flex;
+                        justify-content: center;
+                        padding: 10px;
+                        gap: 5px;
+
+                        i {
+                            cursor: pointer;
+                            margin: auto;
+                        }
+
+                        &>.ph-pass-box {
+                            height: 28px;
+                            padding: 5px;
+                            border: 2px solid #ccc;
+                            display: flex;
+                            gap: 12px;
+                        }
+                    }
+
+                    &:hover {
+                        background-color: #ecf0f1;
+                    }
+                }
+            }
+
+            &>.ph-username-history {
+                .ph-left {
+                    i {
+                        width: 20%;
+                    }
+
+                    p {
+                        width: 50%;
+                        text-align: left;
+                    }
+                }
+            }
+        }
+    }
+
+    &>.psp-master-pass {
         width: 80%;
         margin: auto;
         display: flex;
         justify-content: space-between;
         transition: all 0.3s ease;
+
         &.hide {
-            opacity : 0;
+            opacity: 0;
             width: 0;
-            height : 0 ;
+            height: 0;
             padding: 0;
             margin: 0;
             border: 0;
         }
-        & > input {
-            width : 70% ;
+
+        &>input {
+            width: 70%;
             padding: 12px 15px;
             margin-bottom: 15px;
             border: none;
             border-bottom: 1px solid #ccc;
             background-color: transparent;
+
             &:focus {
                 border-color: #007bff;
                 outline: none;
             }
         }
-        & > button {
-            padding : 5px 10px ;
+
+        &>button {
+            padding: 5px 10px;
             background-color: #70d8f1;
             color: #2c3e50;
             border: none;
@@ -99,12 +247,219 @@
             cursor: pointer;
             font-size: 1rem;
             transition: background-color 0.3s ease;
+
+            &:hover {
+                background-color: #4fc5e9;
+            }
+        }
+    }
+
+    &>.psp-share {
+        width: 90%;
+        background-color: #34495e;
+        color: #ecf0f1;
+        /* position: absolute; */
+        top: 110px;
+        right: 20px;
+        z-index: 29;
+        transition: all 0.3s ease;
+
+        &.hide {
+            opacity: 0;
+            width: 0;
+            height: 0;
+            padding: 0;
+            margin: 0;
+            border: 0;
+        }
+
+        &>.psp-share-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px;
+
+            &>i {
+                cursor: pointer;
+                font-size: 24px;
+
+                &:hover {
+                    color: #007bff;
+                }
+            }
+        }
+        & > .psp-share-bottom {
+            border : 1px solid #2c3e50; ;
+            .psp-share-user-outline {
+                & > .psp-share-user-title {
+                    display: flex;
+                    background-color: #f0f0f0;
+                    color: black;
+                    border-bottom: 1px solid #ccc;
+
+                    & > * {
+                        width: 50%;
+                        padding: 10px;
+                        text-align: center;
+                        font-weight: bold;
+                    }
+                }
+                & > .psp-share-user-list {
+                    & > div {
+                        display: flex;
+                        padding : 12px ;    
+                        background-color: white;
+                        justify-content: space-around;
+                        color: black;
+                        & > div {
+                            width: 50%;
+                            padding: 10px;
+                            text-align: center;
+                        }
+                        & > button {
+                            padding: 5px 10px;
+                            background-color: #ccc;
+                            color: #2c3e50;
+                            border: none;
+                            border-radius: 4px;
+                            cursor: pointer;
+                            font-size: 1rem;
+                            &:hover {
+                                background-color: #bbb;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+.pass-edit-page {
+    height: 100%;
+    width: 25%;
+    border: 1px solid #ccc;
+    background-color: #f0f0f0;
+    border-radius: 5px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    transform: translateX(100%);
+    transition: transform 0.3s ease;
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 9;
+
+    &>.pep-top {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 12px;
+        border-bottom: 1px solid #ccc;
+
+        &>i {
+            cursor: pointer;
+            font-size: 20px;
+
+            &:hover {
+                color: #007bff;
+            }
+        }
+    }
+
+    &>.pep-middle {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        padding: 10px;
+
+        &>* {
+            display: flex;
+            justify-content: space-around;
+            gap: 20px;
+            padding: 12px 0;
+
+            &>.pep-left {
+                margin: auto;
+                width: 30%;
+                margin-right: 30px;
+                position: relative;
+
+                &>.pep-label {
+                    width: 100%;
+                    color: #2c3e50;
+                    text-align: right;
+
+                    &>span {
+                        margin: 0 0 0 12px;
+                        color: red;
+                        position: absolute;
+                        top: 0;
+                    }
+                }
+            }
+
+            &>.pep-right {
+                width: 70%;
+                margin-right: 30px;
+
+                &>input {
+                    width: 100%;
+                    margin-bottom: 15px;
+                    font-size: 16px;
+                    border: none;
+                    border-bottom: 1px solid #ccc;
+                    background-color: transparent;
+
+                    &:focus {
+                        border-color: #007bff;
+                        outline: none;
+                    }
+                }
+            }
+        }
+
+        &>.pep-password>.pep-right {
+            position: relative;
+
+            &>.toggle-password {
+                position: absolute;
+                right: 12px;
+                cursor: pointer;
+
+                &:hover {
+                    color: #007bff;
+                }
+            }
+        }
+    }
+
+    &>.pep-bottom {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 12px;
+
+        &>button {
+            padding: 5px 10px;
+            background-color: #70d8f1;
+            color: #2c3e50;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background-color 0.3s ease;
+
             &:hover {
                 background-color: #4fc5e9;
             }
         }
     }
 }
+
+.pass-edit-page.show {
+    transform: translateX(0);
+}
+
 .pass-show-up-page.show {
     transform: translateX(0);
 }

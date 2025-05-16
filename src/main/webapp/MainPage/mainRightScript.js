@@ -32,5 +32,15 @@ rightBar.querySelector('.new-pass-btn').addEventListener('click', function () {
 
 passUpPage.querySelector('.close-btn').addEventListener('click', function () {
     passUpPage.classList.remove('show');
+    let userNameHistory = document.querySelector('.ph-username-history');
+    let passwordHistory = document.querySelector('.ph-pass-history');
     document.querySelector('.psp-master-pass').classList.add('hide');
+    document.querySelector('.psp-main .show-up-toggle').classList.remove('on');
+    document.querySelector('.psp-master-pass').querySelector('input').value = '';
+    document.querySelector('.psp-history').classList.add('hide');
+    userNameHistory.querySelector('.ph-values').innerHTML = '';
+    userNameHistory.classList.remove('show');
+    passwordHistory.querySelector('.ph-values').innerHTML = '';
+    passwordHistory.classList.remove('show');
+    document.querySelector('.ph-no-history').classList.add('show');
 })
