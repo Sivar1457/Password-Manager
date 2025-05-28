@@ -258,13 +258,14 @@
         width: 90%;
         background-color: #34495e;
         color: #ecf0f1;
-        /* position: absolute; */
+        position: absolute;
         top: 110px;
         right: 20px;
         z-index: 29;
-        transition: all 0.3s ease;
+        transition: all 0.5s ease;
 
         &.hide {
+            transform: translateX(200%);
             opacity: 0;
             width: 0;
             height: 0;
@@ -307,14 +308,29 @@
                 & > .psp-share-user-list {
                     & > div {
                         display: flex;
-                        padding : 12px ;    
+                        padding : 12px ;
                         background-color: white;
-                        justify-content: space-around;
+                        justify-content: space-between;
                         color: black;
-                        & > div {
-                            width: 50%;
+                        & > p {
                             padding: 10px;
-                            text-align: center;
+                            width: 40%;
+                            word-break: break-word;
+                            text-align: left;
+                        }
+                        & > .psp-share-user-name {
+                            /* padding: 10px;
+                            text-align: left; */
+                            &:hover {
+                                background-color: #ecf0f1;
+                            }
+                        }
+                        & > .psp-share-user-email {
+                            /* padding: 10px;
+                            text-align: left; */
+                            &:hover {
+                                background-color: #ecf0f1;
+                            }
                         }
                         & > button {
                             padding: 5px 10px;

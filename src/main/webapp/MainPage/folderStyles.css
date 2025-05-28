@@ -1,0 +1,224 @@
+
+.folder-bar {
+    height : 100%;
+    width: 80%;
+    &.hide {
+        display: none;
+    }
+    & > .fb-top {
+        padding: 12px;
+        border-bottom: 1px solid rgb(210, 210, 210);
+        display: flex;
+        gap : 20px ;
+        & > h3 {
+            margin : auto 0 ;
+        }
+        & > .new-fold-btn {
+            border: none;
+            background-color: #70d8f1;
+            color: #2c3e50;
+            padding: 6px 12px;
+            margin : 4px ;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.5s ease;
+            &:hover {
+                background-color: #4fc5e9;
+                color : black;
+            }
+        }
+
+        & > .fb-input-outer {
+            display: flex;
+            gap: 12px;
+            transition: all 0.5s ease;
+            & > input {
+                width : 80% ;
+                padding: 8px 9px;
+                border: none;
+                border-bottom: 1px solid #ccc;
+                background-color: transparent;
+                &:focus {
+                    border-color: #007bff;
+                    outline: none;
+                }
+            }
+            & > button {
+                padding : 5px 10px ;
+                background-color: #70d8f1;
+                color: #2c3e50;
+                border: none;
+                border-radius: 4px;
+                cursor: pointer;
+                font-size: 1rem;
+                transition: background-color 0.3s ease;
+                &:hover {
+                    background-color: #4fc5e9;
+                }
+            }
+            &.hide {
+                opacity: 0;
+                width: 0;
+                height: 0;
+                padding: 0;
+                margin: 0;
+                border: 0;
+            }        
+        }
+
+    }
+    & > .fb-main {
+        height: 100%;
+        display : flex;
+        & > .fbm-left {
+            width: 30%;
+            height: 100%;
+            padding: 20px;
+            border-right: 1px solid #cad2d4;
+            overflow-y: scroll;
+            scrollbar-width: none;
+            &::-webkit-scrollbar {
+                display: none;
+            }
+            & > .fb-folder {
+                margin : 8px 0;
+                padding: 12px;
+                border : 1px solid #cad2d4;
+                border-radius: 20px;
+                cursor: pointer;
+                position: relative;
+                & > h3 {
+                    padding : 0 12px 0 12px ;
+                    text-align: center;
+                }
+                & > span {
+                    font-size: 40px;
+                    color: #4fc5e9;
+                    position: absolute;
+                    top: 10%;
+                    right: 4%;
+                    transition: all 0.3s ease;
+                    &.hide {
+                        opacity: 0;
+                        width: 0;
+                        height: 0;
+                        padding: 0;
+                        margin: 0;
+                        border: 0;
+                    }
+                }
+            }
+        }
+        & > .fbm-right {
+            width: 70%;
+            height : 100% ;
+            & > .fbm-rtop {
+                padding : 20px;
+                display: flex;
+                justify-content: space-between;
+                border-bottom: 1px solid #cad2d4;
+                & > p {
+                    display: none;
+                }
+                & > div {
+                    display: flex;
+                    width : 20% ;
+                    justify-content: space-around;
+                    & > * {
+                        cursor: pointer;
+                        padding: 6px 12px;
+                        border-radius: 4px;
+                        transition: all 0.3s ease-in-out;
+                        &:hover {
+                            background-color: #dfe6e9;
+                            color : #2c3e50;
+                        }
+                    }
+                }
+            }
+            & > .fbm-rmain {
+                & > .fb-pass-container {
+                    display: flex;
+                    flex-wrap: wrap;
+                    gap: 12px;
+                    padding: 20px;
+                    & > .pass {
+                        padding: 12px;
+                        border : 1px solid #cad2d4;
+                        border-radius: 10px;
+                        background-color: #ecf0f1;
+                        cursor: pointer;
+                        transition: all 0.3s ease-in-out;
+                        &:hover {
+                            background-color: #dfe6e9;
+                            color : #2c3e50;
+                        }
+                        & > *.hide {
+                            display: none;
+                        }
+                    }
+                }
+                & > .fb-pass-empty-container {
+                    padding: 12px;
+                }
+                & > div.hide {
+                    display: none;
+                }
+            }
+            &.hide {
+                display: none;
+            }
+        }
+    }   
+}
+
+.select-folders-page {
+    position: absolute;
+    top : 10px ;
+    left : 40% ;
+    background-color: #f0f0f0;
+    width : 30% ;
+    height : fit-content;
+    border : 1px solid #2c3e50;
+    border-radius: 20px;
+    padding : 12px ;
+    padding-bottom: 20px;
+    transition: all 0.5s ease-in-out;
+    transform: translateY(-200%);
+    z-index: 29;
+    &.show {
+        transform: translateY(0);
+    }
+    & > .sfp-top {
+        display: flex;
+        justify-content: space-between;
+        padding: 5px;
+        border-bottom: 1px solid #ccc;
+        & > span {
+            cursor: pointer;
+        }
+    }
+    & > .sfp-main {
+        margin-top: 12px;
+        & > .sfp-folder {
+            padding: 12px;
+            border : 1px solid #2c3e50;
+            border-radius: 10px;
+            cursor: pointer;
+            margin: 4px;
+            &:hover {
+                background-color: #ecf0f1;
+            }
+        }
+        & > .sfp-added-folder {
+            padding: 12px;
+            border : 1px solid #2c3e50;
+            border-radius: 10px;
+            cursor: pointer;
+            margin: 4px;
+            &:hover {
+                color: #2c3e50;
+            }
+        }
+    }
+}

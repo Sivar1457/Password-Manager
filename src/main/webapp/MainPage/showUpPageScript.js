@@ -6,7 +6,7 @@ function setUp() {
 }
 
 let passwordSetter = function (password) {
-    let passPage = rightBar.querySelector('.password-page');
+    let passPage = rightBar.querySelector('.password-page .my-passes');
     let div = document.createElement('div');
     div.className = 'pass';
     div.id = 'pass' + password.id;
@@ -35,8 +35,8 @@ let passwordSetter = function (password) {
 }
 
 document.querySelectorAll('.pass').forEach((pass)=>{
-    pass.addEventListener('click', function () {
-        if (!passUpPage.classList.contains('show')) {
+    pass.addEventListener('click', function (eve) {
+        if (!passUpPage.classList.contains('show') && !eve.target.classList.contains('pass-shared-btn') && !eve.target.classList.contains('pass-shared-with-btn')) {
             passUpPage.querySelector('.pass-name').innerText = pass.querySelector('.name').innerText;
             passUpPage.querySelector('.pass-date').innerText = pass.querySelector('.date-time').innerText;
             passUpPage.querySelector('.username .value').innerText = pass.querySelector('.username').innerText;
@@ -55,12 +55,21 @@ document.querySelectorAll('.pass').forEach((pass)=>{
 let masterPassCurr = null;
 
 document.querySelector('.psp-main .fa-eye').addEventListener('click',function(){
+    document.querySelector('.master-pass').placeholder = "Enter the master password for showing password" ;
+    let toggleIcon = document.querySelector('.psp-main .show-up-toggle');
     if ( document.querySelector('.psp-main .fa-eye') ) {
         if ( document.querySelector('.psp-master-pass').classList.contains('hide') ) {
-            document.querySelector('.psp-master-pass').classList.toggle('hide');
+            document.querySelector('.psp-master-pass').classList.remove('hide');
+            toggleIcon.classList.add('on');
         }
-        let toggleIcon = document.querySelector('.psp-main .show-up-toggle');
-        toggleIcon.classList.toggle('on');
+        else if ( !(masterPassCurr == 'showPass' )) {
+            toggleIcon.classList.add('on');
+            masterPassCurr = 'showPass';
+        }
+        else {
+            document.querySelector('.psp-master-pass').classList.add('hide');
+            toggleIcon.classList.remove('on');
+        }
     }
     masterPassCurr = 'showPass';
 })
@@ -72,6 +81,7 @@ let getPass = async function(pass){
             'Content-Type': 'application/json'
         },
         body: JSON.stringify({
+            user_name : document.querySelector('.profile-name').innerText,
             pass_id : document.querySelector('.psp-pass-id').innerText,
             master_pass : pass
         })
@@ -82,7 +92,6 @@ let getPass = async function(pass){
 let masterPassGetFunc = async function() {
     let pass = document.querySelector('.psp-master-pass').querySelector('input').value
     let data = await getPass(pass);
-    console.log(data);
     if ( data.result == 'success' ) {
         document.querySelector('.psp-master-pass').querySelector('input').value = '';
         passUpPage.querySelector('.password .value').innerText = data.pass;
@@ -110,7 +119,9 @@ document.querySelector('.master-pass-submit').addEventListener('click', () => {
     }
     else if ( masterPassCurr == 'editPass' ) {
         editDataFunc();
-        document.querySelector('.psp-master-pass').classList.add('hide');
+    }
+    else if ( masterPassCurr == 'sharePass' ) {
+        shareFunc();
     }
 } )
 
@@ -190,63 +201,59 @@ document.querySelector('.psp-history .ph-top i').addEventListener('click',functi
     document.querySelector('.psp-history').classList.add('hide');
 })
 
-// share password btn event listener
-document.querySelector('span.share-btn').addEventListener('click',function(){
-    let passShowUpPage = document.querySelector('.pass-show-up-page');
-    let pspShare = passShowUpPage.querySelector('.psp-share');
-    if ( pspShare.classList.contains('hide') ) {
-        pspShare.classList.remove('hide');
-    }
-    else {
-        pspShare.classList.add('hide');
-    }
-})
-
-let getUsers = async function(){
-    
-}
-
 //                              Edit Button Event Listeners
 let editDataFunc = async function(){
     let passShowUpPage = document.querySelector('.pass-show-up-page');
     let pspMain = passShowUpPage.querySelector('.psp-main');
     let passEditPage = document.querySelector('.pass-edit-page');
     let passData = await getPass(passShowUpPage.querySelector('.master-pass').value);
-    passShowUpPage.classList.remove('show');
-    passEditPage.classList.add('show');
-    passEditPage.querySelector('.pep-input-name').value = passShowUpPage.querySelector('.psp-up .details .pass-name').innerText;
-    passEditPage.querySelector('.pep-input-user-name').value = pspMain.querySelector('.username .value').innerText;
-    passEditPage.querySelector('.pep-input-password').value = passData.pass;
-    passEditPage.querySelector('.pep-input-url').value = pspMain.querySelector('.url .value').innerText;
-    passEditPage.querySelector('.pep-input-description').value = pspMain.querySelector('.description .value').innerText;
-    passEditPage.querySelector('.pep-close-btn').addEventListener('click',function(){
-        passEditPage.classList.remove('show');
-        passShowUpPage.classList.add('show');
-    })
-    passEditPage.querySelector('.pep-password i').addEventListener('click',function(){
-        if ( passEditPage.querySelector('.pep-password i').classList.contains('fa-eye') ) {
-            passEditPage.querySelector('.pep-password i').classList.remove('fa-eye');
-            passEditPage.querySelector('.pep-password i').classList.add('fa-eye-slash');
-            passEditPage.querySelector('.pep-input-password').setAttribute('type','text');
-        }
-        else {
-            passEditPage.querySelector('.pep-password i').classList.remove('fa-eye-slash');
-            passEditPage.querySelector('.pep-password i').classList.add('fa-eye');
-            passEditPage.querySelector('.pep-input-password').setAttribute('type','password');
-        }
-    })
-    passEditPage.querySelector('.pep-cancel-btn').addEventListener('click',function(){
-        passEditPage.classList.remove('show');
-        passShowUpPage.classList.add('show');
+    console.log(passData);
+    if ( passData.result == 'success' ) {
+        document.querySelector('.psp-master-pass').classList.add('hide');
+        document.querySelector('.psp-main .show-up-toggle').classList.remove('on');
+        passShowUpPage.classList.remove('show');
+        passEditPage.classList.add('show');
+        passEditPage.querySelector('.pep-input-name').value = passShowUpPage.querySelector('.psp-up .details .pass-name').innerText;
+        passEditPage.querySelector('.pep-input-user-name').value = pspMain.querySelector('.username .value').innerText;
+        passEditPage.querySelector('.pep-input-password').value = passData.pass;
+        passEditPage.querySelector('.pep-input-url').value = pspMain.querySelector('.url .value').innerText;
+        passEditPage.querySelector('.pep-input-description').value = pspMain.querySelector('.description .value').innerText;
+        passEditPage.querySelector('.pep-close-btn').addEventListener('click',function(){
+            passEditPage.classList.remove('show');
+            passShowUpPage.classList.add('show');
+        })
+        passEditPage.querySelector('.pep-password i').addEventListener('click',function(){
+            if ( passEditPage.querySelector('.pep-password i').classList.contains('fa-eye') ) {
+                passEditPage.querySelector('.pep-password i').classList.remove('fa-eye');
+                passEditPage.querySelector('.pep-password i').classList.add('fa-eye-slash');
+                passEditPage.querySelector('.pep-input-password').setAttribute('type','text');
+            }
+            else {
+                passEditPage.querySelector('.pep-password i').classList.remove('fa-eye-slash');
+                passEditPage.querySelector('.pep-password i').classList.add('fa-eye');
+                passEditPage.querySelector('.pep-input-password').setAttribute('type','password');
+            }
+        })
+        passEditPage.querySelector('.pep-cancel-btn').addEventListener('click',function(){
+            passEditPage.classList.remove('show');
+            passShowUpPage.classList.add('show');
+            passShowUpPage.querySelector('.master-pass').value = '';
+        })
+    }
+    else {
         passShowUpPage.querySelector('.master-pass').value = '';
-    })
+        alert('Wrong Master Password');
+    }
 }
 document.querySelector('.pass-show-up-page .edit-btn').addEventListener('click',function(){
-    if ( document.querySelector('.psp-master-pass').classList.contains('hide') ) {
-        document.querySelector('.psp-master-pass').classList.toggle('hide');
+    document.querySelector('.master-pass').placeholder = "Enter the master password for editing password" ;
+    if ( document.querySelector('.psp-master-pass').classList.contains('hide') || !(masterPassCurr == 'editPass' )) {
+        document.querySelector('.psp-master-pass').classList.remove('hide');
+        masterPassCurr = 'editPass';
     }
-    document.querySelector('.psp-main .show-up-toggle').classList.remove('on');
-    masterPassCurr = 'editPass';
+    else {
+        document.querySelector('.psp-master-pass').classList.add('hide');
+    }
 })
 
 let updatePass = async function(){
@@ -306,3 +313,167 @@ let getHistory = async function(){
     })
     return await responce.json();
 }
+
+
+
+
+// share password btn event listener
+
+
+
+document.querySelector('span.share-btn').addEventListener('click',function(){
+    document.querySelector('.master-pass').placeholder = "Enter the master password for sharing password" ;
+    if ( document.querySelector('.psp-master-pass').classList.contains('hide') || !(masterPassCurr == 'sharePass' )) {
+        document.querySelector('.psp-master-pass').classList.remove('hide');
+        masterPassCurr = 'sharePass';
+    }
+    else {
+        document.querySelector('.psp-master-pass').classList.add('hide');
+    }
+})
+
+let shareFunc = async function(){
+    let passShowUpPage = document.querySelector('.pass-show-up-page');
+    let passData = await getPass(passShowUpPage.querySelector('.master-pass').value);
+    console.log(passData);
+    if ( passData.result == 'success' ) {
+        document.querySelector('.psp-master-pass').classList.add('hide');
+        let pspShare = passShowUpPage.querySelector('.psp-share');
+        if ( pspShare.classList.contains('hide') ) {
+            pspShare.classList.remove('hide');
+            getUsers();
+        }
+        else {
+            pspShare.classList.add('hide');
+            passShowUpPage.querySelector('.master-pass').value = '';
+        }
+    }
+    else {
+        alert('Wrong Master Password');
+    }
+}
+
+document.querySelector('.psp-share-top i').addEventListener('click' , function(){
+    document.querySelector('.psp-share').classList.add('hide');
+    document.querySelector('.psp-share .psp-share-user-list').innerHTML = '';
+})
+
+let getUsers = async function(){
+    let responce = await fetch('/password/userGetter' , {
+        method : 'POST',
+        headers : {
+            'Content-Type' : 'application/json'
+        },
+        body : JSON.stringify({
+            type : "allUsers",
+            user_name : document.querySelector('.profile-name').innerText,
+            pass_id : document.querySelector('.psp-pass-id').innerText
+        })
+    })
+    let pass = document.querySelector('.pass-show-up-page').querySelector('.master-pass').value;
+    document.querySelector('.pass-show-up-page').querySelector('.master-pass').value = '';
+    let data = await responce.json();
+    let shareUserList = document.querySelector('.psp-share .psp-share-user-list');
+    shareUserList.innerHTML = '';
+    data.forEach((user)=>{
+        let userDiv = document.createElement('div');
+        userDiv.className = 'psp-share-user';
+        let userName = document.createElement('p');
+        userName.className = 'psp-share-user-name';
+        userName.innerText = user.user_name;
+        let userEmail = document.createElement('p');
+        userEmail.classList.add('psp-share-user-email');
+        userEmail.innerText = user.email;
+        let shareBtn = document.createElement('button');
+        if ( user.related != 'related' ) {
+            shareBtn.classList.add('psp-share-user-btn');
+            shareBtn.innerText = 'Share';
+            shareBtn.addEventListener('click' , function(){
+                sharePassToUser(user.user_name,pass);
+                shareBtn.innerText = 'Shared';
+                shareBtn.setAttribute('disabled','true');
+                shareBtn.classList.add('disabled');
+                shareBtn.classList.remove('psp-share-user-btn');
+            })
+        }
+        else {
+            shareBtn.classList.add('psp-share-user-btn');
+            shareBtn.innerText = 'Shared';
+            shareBtn.setAttribute('disabled','true');
+            shareBtn.classList.add('disabled');
+        }
+        userDiv.append(userName,userEmail,shareBtn);
+        shareUserList.append(userDiv);
+        console.log(user);
+    })
+}
+
+let sharePassToUser = async function(userName,pass){
+    let responce = await fetch('/password/passShare', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            pass_id : document.querySelector('.psp-pass-id').innerText,
+            user_name : userName,
+            master_pass : pass
+        })
+    })
+    let data = await responce.json();
+    console.log(data);
+}
+
+
+
+
+
+
+
+document.querySelector('.move-to-folder-btn').addEventListener('click',async function(){
+    let sfp = document.querySelector('.select-folders-page');
+    if ( !sfp.classList.contains('show') ) {
+        let responce = await fetch('/password/folderGetter', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                user_name: document.querySelector('.profile-name').innerText,
+                pass_id: document.querySelector('.psp-pass-id').innerText
+            })
+        });
+        let data = await responce.json();
+        console.log(data);
+        if ( data ) {
+            let sfpMain = sfp.querySelector('.sfp-main');
+            sfpMain.innerText = '';
+            data.forEach((folder) => {
+                let sfpDiv = document.createElement('div');
+                sfpDiv.innerText = folder.folder_name;
+                if ( folder.isContains == 'yes' ) {
+                    sfpDiv.classList.add('sfp-added-folder');
+                }
+                else {
+                    sfpDiv.classList.add('sfp-folder');
+                    sfpDiv.addEventListener('click',async function () {
+                        let responceNext = await fetch('/password/folderPassAdder',{
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({
+                                folder_name: folder.folder_name,
+                                pass_id: document.querySelector('.psp-pass-id').innerText
+                            })
+                        })
+                        sfpDiv.classList.add('sfp-added-folder');
+                        sfpDiv.classList.remove('sfp-folder');
+                    })
+                }
+                sfpMain.appendChild(sfpDiv);
+            })
+        }
+    }
+    sfp.classList.toggle('show');
+})

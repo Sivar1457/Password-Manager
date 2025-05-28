@@ -16,7 +16,6 @@ selectionLeftBar($("left-bar").querySelectorAll("h4")[0]);
 
 
 $("left-bar").addEventListener("click", function (e) {
-    console.log(e.target);
     let element = e.target;
     if ( element.tagName.toLowerCase() === "h4" && !element.classList.contains('selected') ) {
         let leftBars = document.querySelectorAll(".left-bar h4");
@@ -35,7 +34,6 @@ let profileSetUp = async function () {
         }
     })
     let data = await response.json();
-    console.log(data)
     if (data.result === 'failure') {
         window.location.href = '/password/';
     }
@@ -53,6 +51,13 @@ let logOut = async function () {
         window.location.href = '/password/';
     }, 1000);
 }
+
+$('left-bar .folders-revoke-btn').addEventListener('click',function() {
+    let folderBar = $('folder-bar');
+    if ( folderBar.classList.contains('hide') ) folderBar.classList.remove('hide');
+    let rightBar = $('right-bar');
+    if ( !rightBar.classList.contains('hide') ) rightBar.classList.add('hide');
+})
 
 $('left-bar-bottom .logout').addEventListener('click', logOut );
 

@@ -14,12 +14,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.security.PublicKey;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Statement;
 
-@WebServlet("/passGetter")
-public class PasswordGetter extends HttpServlet {
+@WebServlet("/passShare")
+public class PasswordShare extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -27,10 +29,10 @@ public class PasswordGetter extends HttpServlet {
         ServletInputStream input = req.getInputStream();
         ServletOutputStream output = resp.getOutputStream();
         byte[] bytesArray = new byte[1024];
-        int inputLen = 0 ;
+        int requestLen = 0 ;
         String requestData = null ;
-        while ( (inputLen = input.readLine(bytesArray,0,bytesArray.length)) != -1 ) {
-            requestData = new String(bytesArray,0,inputLen, StandardCharsets.UTF_8);
+        while ( (requestLen = input.readLine(bytesArray,0,bytesArray.length)) != -1 ) {
+            requestData = new String(bytesArray,0,requestLen, StandardCharsets.UTF_8);
         }
         JSONObject jsonRequest = new JSONObject(requestData);
         String query = "select pass from \"password_container\" where pass_id = ? " ;
@@ -41,19 +43,42 @@ public class PasswordGetter extends HttpServlet {
             ResultSet data = preparedStatement.executeQuery();
             data.next();
             String pass = data.getString(1);
-            query = "select private_key from \"key\" where key_id = (select key_id from \"user\" where user_name = ?);" ;
+            query = "select * from \"key\" where key_id = (select key_id from \"user\" where user_id = (select owner_id from \"password_container\" where pass_id = ?));" ;
+            preparedStatement = conn.prepareStatement(query);
+            preparedStatement.setInt(1,jsonRequest.getInt("pass_id"));
+            data = preparedStatement.executeQuery();
+            data.next();
+            String user1PrivateKey = data.getString("private_key");
+            String user1PublicKey = data.getString("public_key");
+            query = "select u.* , k.* from \"key\" k join \"user\" u on u.user_name = ? where k.key_id = u.key_id";
             preparedStatement = conn.prepareStatement(query);
             preparedStatement.setString(1,jsonRequest.getString("user_name"));
             data = preparedStatement.executeQuery();
             data.next();
-            String privateKey = data.getString(1);
+            String user2PublicKey = data.getString("public_key");
+            String user2PrivateKey = data.getString("private_key");
+            int user2Id = data.getInt("user_id");
             SymmetricConvertor symmetricConvertor = new SymmetricConvertor();
-            String decryptKey = symmetricConvertor.decryptValue(privateKey, jsonRequest.getString("master_pass"));
+            String decryptKey = symmetricConvertor.decryptValue(user1PrivateKey, jsonRequest.getString("master_pass"));
             AsymmetricConvertor asymmetricConvertor = new AsymmetricConvertor();
             String decryptPass = asymmetricConvertor.decryption(pass,decryptKey);
+            System.out.println(decryptPass);
+            String[] keys = {user1PublicKey,user2PublicKey};
+            String newPass = asymmetricConvertor.encryption(decryptPass,keys);
+            query = "update \"password_container\"" +
+                    "\nset pass = ? " +
+                    " \nwhere pass_id = ? ;";
+            preparedStatement = conn.prepareStatement(query);
+            preparedStatement.setString(1,newPass);
+            preparedStatement.setInt(2,jsonRequest.getInt("pass_id"));
+            System.out.println(preparedStatement);
+            preparedStatement.executeUpdate();
+            query = String.format("insert into \"shared_pass_relation\" ( pass_id , user_id ) values ( %d , %d ) ;",jsonRequest.getInt("pass_id"),user2Id);
+            System.out.println(query);
+            Statement statement = conn.createStatement();
+            statement.executeUpdate(query);
             if ( !decryptPass.trim().isEmpty() ) {
                 jsonResponse.put("result", "success");
-                jsonResponse.put("pass", decryptPass);
                 output.write(jsonResponse.toString().getBytes());
                 return;
             }

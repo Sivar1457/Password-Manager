@@ -1,10 +1,12 @@
 .right-bar {
     height : 100%;
     width : 80%;
+    &.hide {
+        display: none;
+    }
 }
 
 .password-page-top {
-    height : 10% ;
     border-bottom: 1px solid rgb(210, 210, 210);
     padding: 12px;
     & > .password-options {
@@ -13,6 +15,7 @@
         align-items: center;
         margin : 12px 0 0 0 ;
         & > .new-pass-btn {
+            transition: all 0.5s ease;
             background-color: #70d8f1;
             color: #2c3e50;
             padding: 6px 12px;
@@ -23,16 +26,43 @@
                 color : black;
             }
         }
+        &.hide {
+            display: none;
+        }
     }
 }
 
 .password-page {
-    padding : 20px ;
-    display: flex;
-    flex-wrap: wrap;
-    gap : 12px ;
-    color : black;
-    & > .pass {
+    & > div {
+        padding : 20px ;
+        display: flex;
+        flex-wrap: wrap;
+        gap : 12px ;
+        color : black;
+        &.hide {
+            display: none;
+        }
+        & > .pass-share-by {
+            position : relative;
+            & > span {
+                position : absolute;
+                top : 8px;
+                right : 8px;
+                cursor: pointer;
+            }
+        }
+        & > .pass-share-with {
+            position: relative;
+            & > span {
+                position : absolute;
+                top : 8px;
+                left : 8px;
+                cursor: pointer;
+            }
+        }
+    }
+    
+    & > div > .pass {
         height : 100px;
         width : 200px;
         border : 1px solid #2c3e50;
