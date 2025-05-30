@@ -40,7 +40,8 @@ public class FolderGetter extends HttpServlet {
         JSONArray jsonResult = new JSONArray();
         try (Connection conn = PostgresConnection.getConnection()) {
             String query = "select f.* from \"folder\" f\n" +
-                    "join folder_pass_relation r on r.pass_id = ?;" ;
+                    "join folder_pass_relation r on r.pass_id = ?\n" +
+                    "where f.folder_id = r.folder_id ;" ;
             PreparedStatement preparedStatement = conn.prepareStatement(query);
             preparedStatement.setInt(1,jsonObject.getInt("pass_id"));
             ResultSet data = preparedStatement.executeQuery();

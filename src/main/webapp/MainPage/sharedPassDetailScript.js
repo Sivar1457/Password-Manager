@@ -1,7 +1,10 @@
 document.querySelectorAll('.pass-share-by').forEach((pass) => {
     pass.querySelector('.pass-shared-btn').addEventListener('click', async function () {
         let sharedPassDetailPage = document.querySelector('.shared-pass-detail-page');
-        if (!sharedPassDetailPage.classList.contains('show')) sharedPassDetailPage.classList.add('show');
+        if (!sharedPassDetailPage.classList.contains('show')) {
+            sharedPassDetailPage.classList.add('show');
+            document.querySelector('.show-background').classList.add('show');
+        }
         let passId = pass.querySelector('.pass-id').innerText;
         sharedPassDetailPage.querySelector('.spd-web-title').innerText = pass.querySelector('.name').innerText;
         let responce = await fetch('/password/userGetter', {
@@ -30,7 +33,10 @@ document.querySelectorAll('.pass-share-by').forEach((pass) => {
 document.querySelectorAll('.pass-share-with').forEach((pass)=>{
     pass.querySelector('.pass-shared-with-btn').addEventListener('click',async function () {
         let sharedPassDetailPage = document.querySelector('.shared-pass-detail-page');
-        if (!sharedPassDetailPage.classList.contains('show')) sharedPassDetailPage.classList.add('show');
+        if (!sharedPassDetailPage.classList.contains('show')) {
+            sharedPassDetailPage.classList.add('show');
+            document.querySelector('.show-background').classList.add('show');
+        }
         let passId = pass.querySelector('.pass-id').innerText;
         sharedPassDetailPage.querySelector('.spd-web-title').innerText = pass.querySelector('.name').innerText;
         let responce = await fetch('/password/userGetter', {
@@ -51,7 +57,4 @@ document.querySelectorAll('.pass-share-with').forEach((pass)=>{
     })
 })
 
-document.querySelector('.spd-close-btn').addEventListener('click',function(){
-    let sharedPassDetailPage = document.querySelector('.shared-pass-detail-page');
-    if (sharedPassDetailPage.classList.contains('show')) sharedPassDetailPage.classList.remove('show');
-})
+document.querySelector('.spd-close-btn').addEventListener('click',sharedPassDetailPageClosing)

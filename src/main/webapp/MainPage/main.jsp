@@ -29,9 +29,7 @@
                     <h4 class="shared-with-me-revoke-btn">Shared With Me</h4>
                     <!-- <h4>Trash</h4> -->
                 </div>
-                <div class="folders-revoke-btn">
-                    <h3>Folders</h3>
-                </div>
+                <h3 class="folders-revoke-btn">Folders</h3>
                 <!-- <div class="tags">
                     <h3>Tags</h3>
                 </div> -->
@@ -50,7 +48,7 @@
         </div>
         <div class="right-bar">
             <div class="password-page-top">
-                <h3 class="page-name"></h3>
+                <h3 class="page-name">All Passwords</h3>
                 <div class="password-options">
                     <div class="new-pass-btn">New</div>
                 </div>
@@ -217,7 +215,6 @@
                         <h3 class="fbm-name">New Folder</h3>
                         <p class="fbm-pass-id"></p>
                         <div class="fbm-options">
-                            <span class="material-symbols-outlined fbm-add-btn">add</span>
                             <span class="material-symbols-outlined fbm-close-btn">close</span>
                         </div>
                     </div>
@@ -240,7 +237,7 @@
                                                 while (data.next()) {
                                                     %>
                                                         <div class="pass">
-                                                            <h2 class="name"><%=data.getString("web_name")%></h2>
+                                                            <h3 class="name"><%=data.getString("web_name")%></h3>
                                                             <p class="username"><%=data.getString("name")%></p>
                                                             <p class="web-url hide"><%=data.getString("web_url")%></p>
                                                             <p class="description hide"><%=data.getString("description")%></p>
@@ -270,6 +267,7 @@
             </div>
         </div>
     </div>
+    <div class="show-background"></div>
     <div class="input-page">
         <div class="ip-top">
             <h3>New Password</h3>
@@ -381,7 +379,7 @@
         <div class="psp-share hide">
             <div class="psp-share-top">
                 <h3>Share Password</h3>
-                <i class="fa-solid fa-close"></i>
+                <i class="fa-solid fa-close psp-share-close-btn"></i>
             </div>
             <div class="psp-share-bottom">
                 <div class="psp-share-user-outline">
@@ -391,11 +389,6 @@
                         <span class="psp-share-mandatory">~</span>
                     </div>
                     <div class="psp-share-user-list">
-                        <div class="psp-share-user">
-                            <p class="psp-share-user-name">Sivar</p>
-                            <p class="psp-share-user-email">sivashankarankusdbgkhdbgjkrdbjfxhv  @gmail.com</p>
-                            <button class="psp-share-user-btn">Share</button>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -526,7 +519,6 @@
     </div>
 </body>
 <script src="main.js"></script>
-<script src="mainRightScript.js"></script>
 <script src="inputPageScript.js"></script>
 <script src="showUpPageScript.js"></script>
 <script src="sharedPassDetailScript.js"></script>

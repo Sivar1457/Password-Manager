@@ -10,12 +10,9 @@ function togglePassword() {
 }
 $('toggle-password').addEventListener('click', togglePassword);
 
-inputPage.querySelector('.close-btn').addEventListener('click', function () {
-    clearInput();
-    inputPage.classList.remove('show');
-})
 
 function getValues() {
+    let inputPage = document.querySelector('.input-page');
     let inputs = inputPage.querySelector('.inputs');
     let name = inputs.querySelector('.input-name').value;
     let userName = inputs.querySelector('.input-username').value;
@@ -61,24 +58,6 @@ function setValues(data) {
     passwordCollector.push(result);
 }
 
-function clearInput() {
-    let inputs = inputPage.querySelector('.inputs');
-    inputs.querySelector('.input-name').value = '';
-    inputs.querySelector('.input-username').value = '';
-    inputs.querySelector('.input-password').value = '';
-    inputs.querySelector('.input-url').value = '';
-}
-
-inputPage.querySelector('.input-submit').addEventListener('click', function () {
-    let values = getValues();
-    clearInput();
-    if (values) {
-        setValues(values);
-        passwordUploader(values);
-        inputPage.classList.remove('show');
-    }
-})
-
 let passwordUploader = async function (data) {
     let fetchData = {
         user_name: data.userName,
@@ -97,5 +76,28 @@ let passwordUploader = async function (data) {
         body: JSON.stringify(fetchData)
     })
     let result = await response.json();
-    console.log(result.pass_id)
 }
+
+document.querySelector('.input-page').addEventListener('click',function(e){
+    let target = e.target;
+    if ( target.classList.contains('close-btn') ) {
+        inputPageClosing();
+    }
+    if ( target.classList.contains('input-submit') ) {
+        let values = getValues();
+        clearInput();
+        inputPageClosing();
+        if (values) {
+            setValues(values);
+            passwordUploader(values);
+            document.querySelector('.input-page').classList.remove('show');
+        }
+    }
+})
+
+document.querySelector('.input-page').querySelectorAll('input').forEach((input)=>{
+    input.tabIndex = -1;
+})
+document.querySelector('.input-page').querySelectorAll('button').forEach((button)=>{
+    button.tabIndex = -1;
+})
