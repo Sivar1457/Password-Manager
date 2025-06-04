@@ -15,7 +15,7 @@ function selectionLeftBar(ele) {
 selectionLeftBar($("left-bar").querySelectorAll("h4")[0]);
 
 let profileSetUp = async function () {
-    let response = await fetch('/password/signCheck', {
+    let response = await fetch('/signCheck', {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json'
@@ -23,20 +23,20 @@ let profileSetUp = async function () {
     })
     let data = await response.json();
     if (data.result === 'failure') {
-        window.location.href = '/password/';
+        window.location.href = '/';
     }
     $('profile .profile-name').innerText = data.user_name;
 }
 
 let logOut = async function () {
-    await fetch('/password/signOut', {
+    await fetch('/signOut', {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json'
         }
     })
     setTimeout(() => {
-        window.location.href = '/password/';
+        window.location.href = '/';
     }, 1000);
 }
 

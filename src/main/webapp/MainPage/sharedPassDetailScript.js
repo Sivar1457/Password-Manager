@@ -7,7 +7,7 @@ document.querySelectorAll('.pass-share-by').forEach((pass) => {
         }
         let passId = pass.querySelector('.pass-id').innerText;
         sharedPassDetailPage.querySelector('.spd-web-title').innerText = pass.querySelector('.name').innerText;
-        let responce = await fetch('/password/userGetter', {
+        let responce = await fetch('/userGetter', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -39,7 +39,7 @@ document.querySelectorAll('.pass-share-with').forEach((pass)=>{
         }
         let passId = pass.querySelector('.pass-id').innerText;
         sharedPassDetailPage.querySelector('.spd-web-title').innerText = pass.querySelector('.name').innerText;
-        let responce = await fetch('/password/userGetter', {
+        let responce = await fetch('/userGetter', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

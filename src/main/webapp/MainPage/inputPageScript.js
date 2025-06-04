@@ -68,7 +68,7 @@ let passwordUploader = async function (data) {
         name: data.name,
         current_user_name: document.querySelector('.profile-name').innerText
     }
-    let response = await fetch('/password/passUpload', {
+    let response = await fetch('/passUpload', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'

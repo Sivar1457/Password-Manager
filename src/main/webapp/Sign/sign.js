@@ -25,7 +25,7 @@ async function signIn() {
         })
     }
     
-    const responce = await fetch('/password/signIn', {
+    const responce = await fetch('/signIn', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -36,7 +36,7 @@ async function signIn() {
     const data = await responce.json();
     console.log(data);
     if (data.result === 'success') {
-        window.location.href = '/password/MainPage/main.jsp';
+        window.location.href = '/MainPage/main.jsp';
     }
     else {
         document.querySelector('.result').innerText = "User is not exist";;
@@ -69,7 +69,7 @@ async function signUp() {
         alert('Passwords do not match');
         return;
     }
-    const responce = await fetch('/password/signUp', {
+    const responce = await fetch('/signUp', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -142,7 +142,7 @@ _('work').addEventListener('click', function () {
 })
 
 let checkOut = async function() {
-    const response = await fetch('/password/signCheck',{
+    const response = await fetch('/signCheck',{
         method:'GET',
         headers: {
             'Content-Type': 'application/json'
@@ -151,7 +151,7 @@ let checkOut = async function() {
     const data = await response.json();
     console.log(data);
     if (data.result === 'success') {
-        window.location.href = '/password/MainPage/main.jsp';
+        window.location.href = '/MainPage/main.jsp';
     }
 }
 checkOut();

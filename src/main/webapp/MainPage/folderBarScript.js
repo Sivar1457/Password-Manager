@@ -23,7 +23,7 @@ document.querySelector('.folder-bar').addEventListener('click',async function(e)
             alert('Please enter a folder name');
             return;
         }
-        let response = await fetch('/password/folderCreator', {
+        let response = await fetch('/folderCreator', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

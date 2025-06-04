@@ -58,7 +58,7 @@ document.querySelectorAll('.pass').forEach((pass)=>{
 let masterPassCurr = null;
 
 let getPass = async function(pass){
-    let responce = await fetch('/password/passGetter', {
+    let responce = await fetch('/passGetter', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -96,7 +96,7 @@ let updatePass = async function(){
     let pspMain = passShowUpPage.querySelector('.psp-main');
     let passEditPage = document.querySelector('.pass-edit-page');
     let passId = passShowUpPage.querySelector('.psp-pass-id').innerText;
-    let responce = await fetch('/password/passUpdate', {
+    let responce = await fetch('/passUpdate', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -131,7 +131,7 @@ let updatePass = async function(){
 }
 
 let getHistory = async function(){
-    let responce = await fetch('/password/historyGetter', {
+    let responce = await fetch('/historyGetter', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -193,7 +193,7 @@ let shareFunc = async function(){
 }
 
 let getUsers = async function(){
-    let responce = await fetch('/password/userGetter' , {
+    let responce = await fetch('/userGetter' , {
         method : 'POST',
         headers : {
             'Content-Type' : 'application/json'
@@ -243,7 +243,7 @@ let getUsers = async function(){
 }
 
 let sharePassToUser = async function(userName,pass){
-    let responce = await fetch('/password/passShare', {
+    let responce = await fetch('/passShare', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -439,7 +439,7 @@ document.querySelector('.pass-show-up-page').addEventListener('click',async func
     if ( target.classList.contains('move-to-folder-btn') ) {
         let sfp = document.querySelector('.select-folders-page');
         if ( !sfp.classList.contains('show') ) {
-            let responce = await fetch('/password/folderGetter', {
+            let responce = await fetch('/folderGetter', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -462,7 +462,7 @@ document.querySelector('.pass-show-up-page').addEventListener('click',async func
                     else {
                         sfpDiv.classList.add('sfp-folder');
                         sfpDiv.addEventListener('click',async function () {
-                            let responceNext = await fetch('/password/folderPassAdder',{
+                            let responceNext = await fetch('/folderPassAdder',{
                                 method: 'POST',
                                 headers: {
                                     'Content-Type': 'application/json'
