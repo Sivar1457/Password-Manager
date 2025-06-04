@@ -1,4 +1,4 @@
-<%@ page import="db.PostgresConnection,java.sql.*,java.util.*"%>
+<%@ page import="db.PostgresConnection,java.sql.*,java.util.*,starter.*"%>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -57,115 +57,55 @@
                 <div class="my-passes">
                     <%
                         Connection conn = PostgresConnection.getConnection();
-                        try {
-                            String query = "select p.* from \"password_container\" p \n" +
-                                "join \"user\" u on u.user_name = ?\n" +
-                                "where p.owner_id = u.user_id;" ;
-                            PreparedStatement preparedStatement = conn.prepareStatement(query);
-                            preparedStatement.setString(1,(String)session.getAttribute("user_name"));
-                            ResultSet data = preparedStatement.executeQuery();
-                            while (data.next()) {
-                                %>
-                                    <div class="pass" id="pass-<%= data.getInt("pass_id") %>">
-                                        <h2 class="name"><%=data.getString("web_name")%></h2>
-                                        <p class="username"><%=data.getString("name")%></p>
-                                        <p class="web-url hide"><%=data.getString("web_url")%></p>
-                                        <p class="description hide"><%=data.getString("description")%></p>
-                                        <p class="date-time hide"><%=(data.getString("dt_stamp") != null) ? data.getString("dt_stamp") : "No date available"%></p>
-                                        <p class="pass-id hide"><%=data.getInt("pass_id")%></p>
-                                    </div>
-                                <%
-                            }
-                        }
-                        catch(Exception e) {
-                            e.printStackTrace();
-                        }
-                        finally {
-                            try {
-                                if (conn != null) {
-                                    conn.close();
-                                }
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
+                        PasswordGetter passwordGetter = new PasswordGetter();
+                        List<Map> allPass = passwordGetter.getAllPasswords((String)session.getAttribute("user_name"));
+                        for ( Map<String,Object> data : allPass ) {
+                            %>
+                                <div class="pass">
+                                    <h2 class="name"><%=data.get("web_name")%></h2>
+                                    <p class="username"><%=data.get("name")%></p>
+                                    <p class="web-url hide"><%=data.get("web_url")%></p>
+                                    <p class="description hide"><%=data.get("description")%></p>
+                                    <p class="date-time hide"><%=data.get("dt_stamp")%></p>
+                                    <p class="pass-id hide"><%=data.get("pass_id")%></p>
+                                </div>
+                            <%
                         }
                     %>
                 </div>
                 <div class="shared-by-me-passes hide">
                     <%
-                        conn = PostgresConnection.getConnection();
-                        try {
-                            String query = "select p.* from \"password_container\" p\n" +
-                                    "join \"user\" u on u.user_name = ?\n" +
-                                    "join \"shared_pass_relation\" r on r.pass_id = p.pass_id\n" +
-                                    "where p.owner_id = u.user_id ;";
-                            PreparedStatement preparedStatement = conn.prepareStatement(query);
-                            preparedStatement.setString(1,(String)session.getAttribute("user_name"));
-                            ResultSet data = preparedStatement.executeQuery();
-                            while (data.next()) {
-                                %>
-                                    <div class="pass pass-share-by" >
-                                        <span class="material-symbols-outlined pass-shared-btn">send</span>
-                                        <h2 class="name"><%=data.getString("web_name")%></h2>
-                                        <p class="username"><%=data.getString("name")%></p>
-                                        <p class="web-url hide"><%=data.getString("web_url")%></p>
-                                        <p class="description hide"><%=data.getString("description")%></p>
-                                        <p class="date-time hide"><%=(data.getString("dt_stamp") != null) ? data.getString("dt_stamp") : "No date available"%></p>
-                                        <p class="pass-id hide"><%=data.getInt("pass_id")%></p>
-                                    </div>
-                                <%
-                            }
-                        }
-                        catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                        finally {
-                            try {
-                                if (conn != null) {
-                                    conn.close();
-                                }
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
+                        allPass = passwordGetter.getSharedByMePasswords((String)session.getAttribute("user_name"));
+                        for ( Map<String,Object> data : allPass ) {
+                            %>
+                                <div class="pass pass-share-by" >
+                                    <span class="material-symbols-outlined pass-shared-btn">send</span>
+                                    <h2 class="name"><%=data.get("web_name")%></h2>
+                                    <p class="username"><%=data.get("name")%></p>
+                                    <p class="web-url hide"><%=data.get("web_url")%></p>
+                                    <p class="description hide"><%=data.get("description")%></p>
+                                    <p class="date-time hide"><%=data.get("dt_stamp")%></p>
+                                    <p class="pass-id hide"><%=data.get("pass_id")%></p>
+                                </div>
+                            <%
                         }
                     %>
                 </div>
                 <div class="shared-with-me-passes hide">
                     <%
-                        conn = PostgresConnection.getConnection();
-                        try {
-                            String query = "select p.* from \"password_container\" p\n" +
-                                    "join \"user\" u on u.user_name = ?\n" +
-                                    "join \"shared_pass_relation\" r on r.pass_id = p.pass_id\n" +
-                                    "where p.owner_id != u.user_id ;";
-                            PreparedStatement preparedStatement = conn.prepareStatement(query);
-                            preparedStatement.setString(1,(String)session.getAttribute("user_name"));
-                            ResultSet data = preparedStatement.executeQuery();
-                            while (data.next()) {
-                                %>
-                                    <div class="pass pass-share-with">
-                                        <span class="material-symbols-outlined pass-shared-with-btn">arrow_back_2</span>
-                                        <h2 class="name"><%=data.getString("web_name")%></h2>
-                                        <p class="username"><%=data.getString("name")%></p>
-                                        <p class="web-url hide"><%=data.getString("web_url")%></p>
-                                        <p class="description hide"><%=data.getString("description")%></p>
-                                        <p class="date-time hide"><%=(data.getString("dt_stamp") != null) ? data.getString("dt_stamp") : "No date available"%></p>
-                                        <p class="pass-id hide"><%=data.getInt("pass_id")%></p>
-                                    </div>
-                                <%
-                            }
-                        }
-                        catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                        finally {
-                            try {
-                                if (conn != null) {
-                                    conn.close();
-                                }
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
+                        allPass = passwordGetter.getSharedWithMePasswords((String)session.getAttribute("user_name"));
+                        for ( Map<String,Object> data : allPass ) {
+                            %>
+                                <div class="pass pass-share-with">
+                                    <span class="material-symbols-outlined pass-shared-with-btn">arrow_back_2</span>
+                                    <h2 class="name"><%=data.get("web_name")%></h2>
+                                    <p class="username"><%=data.get("name")%></p>
+                                    <p class="web-url hide"><%=data.get("web_url")%></p>
+                                    <p class="description hide"><%=data.get("description")%></p>
+                                    <p class="date-time hide"><%=data.get("dt_stamp")%></p>
+                                    <p class="pass-id hide"><%=data.get("pass_id")%></p>
+                                </div>
+                            <%
                         }
                     %>
                 </div>
@@ -183,31 +123,16 @@
             <div class="fb-main">
                 <div class="fbm-left">
                     <%
-                        conn = PostgresConnection.getConnection();
-                        try {
-                            String query = "select * from \"folder\" where owner_id = (select user_id from \"user\" where user_name = ?);";
-                            PreparedStatement preparedStatement = conn.prepareStatement(query);
-                            preparedStatement.setString(1, (String) session.getAttribute("user_name"));
-                            ResultSet data = preparedStatement.executeQuery();
-                            int count = 0;
-                            List<String> folderNames = new ArrayList<String>();
-                            while (data.next()) {
-                                folderNames.add(data.getString("folder_name"));
-                                %>
-                                    <div class="fb-folder" id="fb-folder-<%= count %>">
-                                        <h3 class="fb-folder-name"><%= data.getString("folder_name") %></h3>
-                                        <span class="material-symbols-outlined selected-arrow-<%= count %> hide">play_arrow</span>
-                                    </div>
-                                <%
-                                count++;
-                            }
-                            if (count == 0) {
-                                %>
-                                    <div class="fb-no-folder">
-                                        <h3 class="fb-no-folder-text">No Folders Available</h3>
-                                    </div>
-                                <%
-                            }
+                        FolderGetter folderGetter = new FolderGetter();
+                        List<String> folderNames = folderGetter.getAllFolderNames((String)session.getAttribute("user_name"));
+                        for ( int i = 0 ; i < folderNames.size() ; i++ ) {
+                            %>
+                                <div class="fb-folder" id="fb-folder-<%= i %>">
+                                    <h3 class="fb-folder-name"><%= folderNames.get(i) %></h3>
+                                    <span class="material-symbols-outlined selected-arrow-<%= i %> hide">play_arrow</span>
+                                </div>
+                            <%
+                        }
                     %>
                 </div>
                 <div class="fbm-right hide">
@@ -223,43 +148,27 @@
                             <h3>It's an empty Folder</h3>
                         </div>
                         <%
-                                for ( int i = 0 ; i < count ; i++ ) {
+                            List<List<Map>> folders = folderGetter.getAllFolders((String)session.getAttribute("user_name"));
+                            for ( int i = 0 ; i < folders.size() ; i++ ) {
+                                List<Map> folder = folders.get(i);
                                     %>
-                                        <div class="fb-pass-container hide" id="fbm-pass-<%= i %>">
-                                            <%
-                                                query = "select p.* from \"password_container\" p\n" +
-                                                "join \"folder\" f on f.folder_name = ?\n" +
-                                                "join \"folder_pass_relation\" r on r.folder_id = f.folder_id\n" +
-                                                "where p.pass_id = r.pass_id ;" ;
-                                                preparedStatement = conn.prepareStatement(query);
-                                                preparedStatement.setString(1, folderNames.get(i));
-                                                data = preparedStatement.executeQuery();
-                                                while (data.next()) {
-                                                    %>
-                                                        <div class="pass">
-                                                            <h3 class="name"><%=data.getString("web_name")%></h3>
-                                                            <p class="username"><%=data.getString("name")%></p>
-                                                            <p class="web-url hide"><%=data.getString("web_url")%></p>
-                                                            <p class="description hide"><%=data.getString("description")%></p>
-                                                            <p class="date-time hide"><%=(data.getString("dt_stamp") != null) ? data.getString("dt_stamp") : "No date available"%></p>
-                                                            <p class="pass-id hide"><%=data.getInt("pass_id")%></p>
-                                                        </div>
-                                                    <%
-                                                }
-                                            %>
-                                        </div>
-                                    <%
-                                }
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            } finally {
-                                try {
-                                    if (conn != null) {
-                                        conn.close();
-                                    }
-                                } catch (Exception e) {
-                                    e.printStackTrace();
-                                }
+                                    <div class="fb-pass-container hide" id="fbm-pass-<%= i %>">
+                                        <%
+                                            for ( Map<String,Object> data : folder ) {
+                                                %>
+                                                    <div class="pass">
+                                                        <h3 class="name"><%=data.get("web_name")%></h3>
+                                                        <p class="username"><%=data.get("name")%></p>
+                                                        <p class="web-url hide"><%=data.get("web_url")%></p>
+                                                        <p class="description hide"><%=data.get("description")%></p>
+                                                        <p class="date-time hide"><%=data.get("dt_stamp")%></p>
+                                                        <p class="pass-id hide"><%=data.get("pass_id")%></p>
+                                                    </div>
+                                                <%
+                                            }
+                                        %>
+                                    </div>
+                                <%
                             }
                         %>
                     </div>
@@ -489,32 +398,6 @@
             <span class="material-symbols-outlined sfp-close-btn">close</span>
         </div>
         <div class="sfp-main">
-            <%
-                conn = PostgresConnection.getConnection();
-                try {
-                    String query = "select * from \"folder\" where owner_id = (select user_id from \"user\" where user_name = ?);";
-                    PreparedStatement preparedStatement = conn.prepareStatement(query);
-                    preparedStatement.setString(1, (String) session.getAttribute("user_name"));
-                    ResultSet data = preparedStatement.executeQuery();
-                    while (data.next()) {
-                        %>
-                            <div class="sfp-folder" id="sfp-folder-<%= data.getInt("folder_id") %>">
-                                <%= data.getString("folder_name") %>
-                            </div>
-                        <%
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                } finally {
-                    try {
-                        if (conn != null) {
-                            conn.close();
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-            %>
         </div>
     </div>
 </body>

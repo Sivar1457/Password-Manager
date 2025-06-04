@@ -1,8 +1,8 @@
 create table "user" (
-    user_id serial primary key,
-    user_name varchar(50) not null,
+    user_id serial primary key not null,
+    user_name varchar(50) not null unique,
     master_pass varchar(255) not null,
-    email varchar(100) not null,
+    email varchar(100) not null unique,
     key_id int not null,
     constraint fk_key_id
         foreign key (key_id) references "key"(key_id),
