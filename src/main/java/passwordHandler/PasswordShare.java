@@ -19,6 +19,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 @WebServlet("/passShare")
 public class PasswordShare extends HttpServlet {
@@ -56,25 +58,33 @@ public class PasswordShare extends HttpServlet {
             data = preparedStatement.executeQuery();
             data.next();
             String user2PublicKey = data.getString("public_key");
-            String user2PrivateKey = data.getString("private_key");
             int user2Id = data.getInt("user_id");
             SymmetricConvertor symmetricConvertor = new SymmetricConvertor();
             String decryptKey = symmetricConvertor.decryptValue(user1PrivateKey, jsonRequest.getString("master_pass"));
             AsymmetricConvertor asymmetricConvertor = new AsymmetricConvertor();
             String decryptPass = asymmetricConvertor.decryption(pass,decryptKey);
-            System.out.println(decryptPass);
-            String[] keys = {user1PublicKey,user2PublicKey};
-            String newPass = asymmetricConvertor.encryption(decryptPass,keys);
+            query = "select k.public_key from \"key\" k\n" +
+                    "join \"shared_pass_relation\" r on r.pass_id = ?\n" +
+                    "join \"user\" u on u.user_id = r.user_id\n" +
+                    "where k.key_id = u.key_id ;" ;
+            preparedStatement = conn.prepareStatement(query);
+            preparedStatement.setInt(1,jsonRequest.getInt("pass_id"));
+            data = preparedStatement.executeQuery();
+            List<String> publicKeys = new ArrayList<>();
+            while ( data.next() ) {
+                publicKeys.add(data.getString(1));
+            }
+            publicKeys.add(user1PublicKey);
+            publicKeys.add(user2PublicKey);
+            String newPass = asymmetricConvertor.encryption(decryptPass,publicKeys);
             query = "update \"password_container\"" +
                     "\nset pass = ? " +
                     " \nwhere pass_id = ? ;";
             preparedStatement = conn.prepareStatement(query);
             preparedStatement.setString(1,newPass);
             preparedStatement.setInt(2,jsonRequest.getInt("pass_id"));
-            System.out.println(preparedStatement);
             preparedStatement.executeUpdate();
             query = String.format("insert into \"shared_pass_relation\" ( pass_id , user_id ) values ( %d , %d ) ;",jsonRequest.getInt("pass_id"),user2Id);
-            System.out.println(query);
             Statement statement = conn.createStatement();
             statement.executeUpdate(query);
             if ( !decryptPass.trim().isEmpty() ) {
@@ -83,6 +93,7 @@ public class PasswordShare extends HttpServlet {
                 return;
             }
         } catch (Exception e) {
+            System.out.println(e.getMessage());
             e.printStackTrace();
         }
         jsonResponse.put("result","failure");

@@ -181,6 +181,7 @@
         <div class="ip-top">
             <h3>New Password</h3>
             <span class="material-symbols-outlined close-btn">close</span>
+            <p class="inCode"></p>
         </div>
         <div class="inputs">
             <input type="text" class="input-name" placeholder="Enter the name">

@@ -25,6 +25,9 @@
                 color: #007bff;
             }
         }
+        .inCode {
+            display: none;
+        }
     }
 
     &>.inputs {

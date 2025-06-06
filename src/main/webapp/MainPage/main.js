@@ -170,11 +170,19 @@ $("left-bar").addEventListener("click", function (e) {
     }
 })
 
-document.querySelector('.right-bar').addEventListener('click',function(e) {
+document.querySelector('.right-bar').addEventListener('click', async function(e) {
     let target = e.target;
     let inputPage = document.querySelector('.input-page');
     if ( target.classList.contains('new-pass-btn') ) {
         if (!inputPage.classList.contains('show') && !document.querySelector('.pass-show-up-page').classList.contains('show')) {
+            let responce = await fetch('/inputStarter',{
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            let data = await responce.json();
+            inputPage.querySelector('.inCode').innerText = data.inCode ;
             inputPage.classList.add('show');
             document.querySelector('.show-background').classList.add('show');
             inputPage.querySelectorAll('input').forEach((input)=>{

@@ -34,6 +34,26 @@
     <artifactId>pty4j</artifactId>
     <version>0.13.4</version>
   </dependency>
+    <dependency>
+      <groupId>com.exceptionfactory.jagged</groupId>
+      <artifactId>jagged-scrypt</artifactId>
+      <version>1.0.0</version>
+    </dependency>
+    <dependency>
+      <groupId>com.exceptionfactory.jagged</groupId>
+      <artifactId>jagged-x25519</artifactId>
+      <version>1.0.0</version>
+    </dependency>
+    <dependency>
+      <groupId>com.exceptionfactory.jagged</groupId>
+      <artifactId>jagged-framework</artifactId>
+      <version>1.0.0</version>
+    </dependency>
+    <dependency>
+      <groupId>com.exceptionfactory.jagged</groupId>
+      <artifactId>jagged-api</artifactId>
+      <version>1.0.0</version>
+    </dependency>
   </dependencies>
   <build>
     <finalName>TestServlet2</finalName>

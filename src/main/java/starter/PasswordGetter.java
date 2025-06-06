@@ -77,8 +77,8 @@ public class PasswordGetter {
         try {
             query = "select p.* from \"password_container\" p\n" +
                     "join \"user\" u on u.user_name = ?\n" +
-                    "join \"shared_pass_relation\" r on r.pass_id = p.pass_id\n" +
-                    "where p.owner_id != u.user_id ;";
+                    "join \"shared_pass_relation\" r on r.user_id = u.user_id\n" +
+                    "where p.pass_id = r.pass_id ;";
             preparedStatement = conn.prepareStatement(query);
             preparedStatement.setString(1,userName);
             data = preparedStatement.executeQuery();

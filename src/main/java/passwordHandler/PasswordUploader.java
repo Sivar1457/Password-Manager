@@ -11,6 +11,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.sql.Connection;
@@ -34,9 +35,20 @@ public class PasswordUploader extends HttpServlet {
             requestData = new String(bytesArray,0,inputLen, StandardCharsets.UTF_8);
         }
         JSONObject jsonRequest = new JSONObject(requestData);
-        int pass_id = upload(jsonRequest);
+        HttpSession session = req.getSession(false);
+        int pass_id = -2 ;
         JSONObject result = new JSONObject();
-        result.put("result","success");
+        if ( jsonRequest.getString("current_user_name").equals(session.getAttribute("user_name")) ) {
+            if ( jsonRequest.getString("inCode").equals((String)session.getAttribute("inCode")) ) {
+                pass_id = upload(jsonRequest);
+                session.setAttribute("inCode","");
+                result.put("notification","no");
+            }
+        }
+        else {
+            result.put("notification","yes");
+        }
+        result.put("result",(pass_id>0)?"success":"failure");
         result.put("pass_id",pass_id);
         output.write(result.toString().getBytes());
     }

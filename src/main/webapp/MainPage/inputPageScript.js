@@ -45,7 +45,6 @@ function setValues(data) {
         return ;
     }
     let result = {
-        id: passwordCollector.length + 1,
         date: new Date().toLocaleDateString(),
         name: data.name,
         userName: data.userName,
@@ -54,8 +53,6 @@ function setValues(data) {
         description: data.description
     }
     console.log(result);
-    passwordSetter(result);
-    passwordCollector.push(result);
 }
 
 let passwordUploader = async function (data) {
@@ -66,7 +63,8 @@ let passwordUploader = async function (data) {
         description: data.description,
         date: data.date,
         name: data.name,
-        current_user_name: document.querySelector('.profile-name').innerText
+        current_user_name: document.querySelector('.profile-name').innerText,
+        inCode : document.querySelector('.input-page .inCode').innerText
     }
     let response = await fetch('/passUpload', {
         method: 'POST',
@@ -76,6 +74,9 @@ let passwordUploader = async function (data) {
         body: JSON.stringify(fetchData)
     })
     let result = await response.json();
+    if ( result.notification == 'yes' ) {
+        alert('Uploading password by not using input page alert')
+    }
 }
 
 document.querySelector('.input-page').addEventListener('click',function(e){
